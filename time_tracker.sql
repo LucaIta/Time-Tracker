@@ -30,6 +30,76 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: lap_time; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+--
+
+CREATE TABLE lap_time (
+    id integer NOT NULL,
+    start_time bigint,
+    end_time bigint,
+    task_id integer
+);
+
+
+ALTER TABLE lap_time OWNER TO "Guest";
+
+--
+-- Name: lap_time_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+--
+
+CREATE SEQUENCE lap_time_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE lap_time_id_seq OWNER TO "Guest";
+
+--
+-- Name: lap_time_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
+--
+
+ALTER SEQUENCE lap_time_id_seq OWNED BY lap_time.id;
+
+
+--
+-- Name: lap_times; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+--
+
+CREATE TABLE lap_times (
+    id integer NOT NULL,
+    start_time bigint,
+    end_time bigint,
+    task_id integer
+);
+
+
+ALTER TABLE lap_times OWNER TO "Guest";
+
+--
+-- Name: lap_times_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+--
+
+CREATE SEQUENCE lap_times_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE lap_times_id_seq OWNER TO "Guest";
+
+--
+-- Name: lap_times_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
+--
+
+ALTER SEQUENCE lap_times_id_seq OWNED BY lap_times.id;
+
+
+--
 -- Name: tasks; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
 --
 
@@ -64,38 +134,17 @@ ALTER SEQUENCE tasks_id_seq OWNED BY tasks.id;
 
 
 --
--- Name: times; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
 --
 
-CREATE TABLE times (
-    id integer NOT NULL,
-    real_time time without time zone,
-    time_diff time without time zone,
-    task_id integer
-);
+ALTER TABLE ONLY lap_time ALTER COLUMN id SET DEFAULT nextval('lap_time_id_seq'::regclass);
 
-
-ALTER TABLE times OWNER TO "Guest";
 
 --
--- Name: times_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
 --
 
-CREATE SEQUENCE times_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE times_id_seq OWNER TO "Guest";
-
---
--- Name: times_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
---
-
-ALTER SEQUENCE times_id_seq OWNED BY times.id;
+ALTER TABLE ONLY lap_times ALTER COLUMN id SET DEFAULT nextval('lap_times_id_seq'::regclass);
 
 
 --
@@ -106,10 +155,33 @@ ALTER TABLE ONLY tasks ALTER COLUMN id SET DEFAULT nextval('tasks_id_seq'::regcl
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
+-- Data for Name: lap_time; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-ALTER TABLE ONLY times ALTER COLUMN id SET DEFAULT nextval('times_id_seq'::regclass);
+COPY lap_time (id, start_time, end_time, task_id) FROM stdin;
+\.
+
+
+--
+-- Name: lap_time_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+--
+
+SELECT pg_catalog.setval('lap_time_id_seq', 1, false);
+
+
+--
+-- Data for Name: lap_times; Type: TABLE DATA; Schema: public; Owner: Guest
+--
+
+COPY lap_times (id, start_time, end_time, task_id) FROM stdin;
+\.
+
+
+--
+-- Name: lap_times_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+--
+
+SELECT pg_catalog.setval('lap_times_id_seq', 1, false);
 
 
 --
@@ -128,18 +200,19 @@ SELECT pg_catalog.setval('tasks_id_seq', 1, false);
 
 
 --
--- Data for Name: times; Type: TABLE DATA; Schema: public; Owner: Guest
+-- Name: lap_time_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
 --
 
-COPY times (id, real_time, time_diff, task_id) FROM stdin;
-\.
+ALTER TABLE ONLY lap_time
+    ADD CONSTRAINT lap_time_pkey PRIMARY KEY (id);
 
 
 --
--- Name: times_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+-- Name: lap_times_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
 --
 
-SELECT pg_catalog.setval('times_id_seq', 1, false);
+ALTER TABLE ONLY lap_times
+    ADD CONSTRAINT lap_times_pkey PRIMARY KEY (id);
 
 
 --
@@ -148,14 +221,6 @@ SELECT pg_catalog.setval('times_id_seq', 1, false);
 
 ALTER TABLE ONLY tasks
     ADD CONSTRAINT tasks_pkey PRIMARY KEY (id);
-
-
---
--- Name: times_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
---
-
-ALTER TABLE ONLY times
-    ADD CONSTRAINT times_pkey PRIMARY KEY (id);
 
 
 --
