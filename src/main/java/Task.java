@@ -5,7 +5,7 @@ import java.util.List;
 public class Task {
   private int id;
   private String name;
-  private int goal_time;
+  private long goal_time;
   private long goal_time_secs;//??!~?!?!!?
 
   //not stored in database?
