@@ -4,23 +4,30 @@
 <h1>--- RUNNING TIME ---</h1>
 <hr>
 
-<form action="/userINPUT" method="post">
+<form action="/tasks" method="post">
   <div class="row">
     <div class="col-sm-6">
-      <h3>What is your task</h3>
-      <input type="text" id="TASK_INPUT" name="TASK_INPUT" class="form-control" required>
+      <h3>What is your task?</h3>
+      <input type="text" id="input_task" name="input_task" class="form-control" required>
     </div>
   </div>
 
   <div class="form-inline">
     <h3>Goal time</h3>
-    <input type="text" id="HH_INPUT" name="TASK_INPUT" class="form-control" placeholder="HH">
-    <input type="text" id="MM_INPUT" name="TASK_INPUT" class="form-control" placeholder="MM">
-    <input type="text" id="SS_INPUT" name="TASK_INPUT" class="form-control" placeholder="SS">
+    <input type="text" id="input_hh" name="input_hh" class="form-control" placeholder="hour">
+    <input type="text" id="input_mm" name="input_mm" class="form-control" placeholder="minute">
+    <input type="text" id="input_ss" name="input_ss" class="form-control" placeholder="second">
   </div>
   <br>
-  <button type="submit" class="btn btn-success">ADD</button>
+  <button type="submit" id="input_goal_button" class="btn btn-info">Enter</button>
 </form>
 <hr>
 
-<h1>Start and Stop Time Section or Link to the other page</h1>
+#if ($tasks.size() != 0)
+  <h2>All Tasks</h2>
+  <ul>
+    #foreach ($task in $tasks)
+      <li><a href="/tasks/$task.getId()">$task.getName</a></li>
+    #end
+  </ul>
+#end
