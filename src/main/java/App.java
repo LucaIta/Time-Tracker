@@ -16,5 +16,19 @@ public class App {
       model.put("template", "templates/home.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    // post(new Route("/insertElement") {
+    //   @Override
+    //   public Object handle(Request request, Response response) {
+    //     String item = (String) request.attribute("item");
+    //     String value = (String) request.attribute("value");
+    //     String dimension = (String) request.attribute("dimension");
+    //     Element e = new Element(item, value, dimension);
+    //     ElementDAO edao = new ElementDAO();
+    //     edao.insert(e);
+    //     JSONObject json = JSONObject.fromObject( e );
+    //     return json;
+    //   }
+    // });
   }
 }

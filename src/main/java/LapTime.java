@@ -29,7 +29,6 @@ class LapTime {
 
   public int getTaskId() {
     return task_id;
-
   }
 
   public static List<LapTime> all() { // not tested yet

@@ -32,7 +32,6 @@ public class LapTimeTest {
     assertEquals(0, testLapTime.getId());
   }
 
-  @Test
   public void LapTime_addTaskToDatabase() {
     LapTime testLapTime = new LapTime(1);
     Task testTask = new Task("Do the dishes", 1);
