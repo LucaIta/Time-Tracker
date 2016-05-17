@@ -10,10 +10,9 @@ class LapTime {
   private final long MILLIS_PER_MINUTE = 60000L;
   private final long MILLIS_PER_SECOND = 1000L;
 
-  public LapTime(long start_time, long end_time, int task_id){
+  public LapTime(long start_time){
     this.start_time = start_time;
-    this.end_time = end_time;
-    this.task_id = task_id;
+    // this.end_time = end_time;
   }
 
   public long getStartTime() {
@@ -24,15 +23,15 @@ class LapTime {
     return end_time;
   }
 
-  public long getId() {
+  public int getId() {
+    return id;
+  }
+
+  public int getTaskId() {
     return task_id;
   }
 
-  public int getTaskId() { // to be completed
-    return task_id;
-  }
-
-  public List<LapTime> all() { // not tested yet
+  public static List<LapTime> all() { // not tested yet
     try (Connection con = DB.sql2o.open()){
       String sql = "SELECT * FROM lap_times";
       List<LapTime> laptimes = con.createQuery(sql).executeAndFetch(LapTime.class);
@@ -40,23 +39,30 @@ class LapTime {
     }
   }
 
+
   public void addToTask(Task task) { // not tested yet
     try (Connection con = DB.sql2o.open()){
-      String sql = "INSERT INTO lap_times (start_time,end_time,task_id int) VALUES (:start_time, :end_time, :task_id)";
-      con.createQuery(sql).addParameter("start_time",this.start_time)
-                          .addParameter("end_time", this.end_time)
-                          .addParameter("task_id", task.getId())
-                          .executeUpdate();
+      String sql = "INSERT INTO lap_times (start_time,task_id) VALUES (:start_time, :task_id)";
+      this.task_id = task.getId();
+      this.id = (int) con.createQuery(sql, true)
+                          .addParameter("task_id", this.task_id)
+                          .addParameter("start_time", this.start_time)
+                          .executeUpdate().getKey();
     }
   }
 
-  // @Override
-  // public boolean equals(LapTime otherLapTime) { // not tested yet
-  //   return this.id == otherLapTime.getId()
-  //   && this.start_time == otherLapTime.getStartTime()
-  //   && this.end_time == otherLapTime.getEndTime()
-  //   && this.task_id == otherLapTime.getTaskId(); // to be created
-  // }
+  @Override
+  public boolean equals(Object otherLapTime){
+    if(!(otherLapTime instanceof LapTime)) {
+      return false;
+    }else{
+      LapTime laptime = (LapTime) otherLapTime;
+    return this.id == laptime.getId()&&
+           this.start_time == laptime.getStartTime()&&
+           this.end_time == laptime.getEndTime()&&
+           this.task_id == laptime.getTaskId();
+    }
+  }
 
   public String getDifferenceAsString() {
     long deltaT = end_time - start_time;
@@ -69,5 +75,14 @@ class LapTime {
     long milliseconds = deltaT;
     return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, milliseconds);
   }
+
+  public static LapTime find(int id) {
+    try (Connection con = DB.sql2o.open()){
+      String sql = "SELECT * FROM lap_times WHERE id = :id";
+      return con.createQuery(sql).addParameter("id", id).executeAndFetchFirst(LapTime.class);
+    }
+  }
+
+
 
 }
