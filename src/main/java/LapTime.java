@@ -1,4 +1,5 @@
 import org.sql2o.*;
+import java.util.List;
 
 class LapTime {
   private int id;
@@ -28,7 +29,7 @@ class LapTime {
   }
 
   public int getTaskId() { // to be completed
-
+    return task_id;
   }
 
   public List<LapTime> all() { // not tested yet
@@ -49,13 +50,13 @@ class LapTime {
     }
   }
 
-  @Override
-  public boolean equals(Laptime otherLapTime){ // not tested yet
-    return this.id == otherLapTime.getId()
-    && this.start_time == otherLapTime.getStartTime()
-    && this.end_time == otherLapTime.getEndTime()
-    && this.task_id == otherLapTime.getTaskId() // to be created
-  }
+  // @Override
+  // public boolean equals(LapTime otherLapTime) { // not tested yet
+  //   return this.id == otherLapTime.getId()
+  //   && this.start_time == otherLapTime.getStartTime()
+  //   && this.end_time == otherLapTime.getEndTime()
+  //   && this.task_id == otherLapTime.getTaskId(); // to be created
+  // }
 
   public String getDifferenceAsString() {
     long deltaT = end_time - start_time;

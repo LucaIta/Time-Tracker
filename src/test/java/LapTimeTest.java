@@ -34,12 +34,12 @@ public class LapTimeTest {
   @Test
   public void LapTime_addTaskToDatabase() { // to test, not passed yet
     LapTime testLapTime = new LapTime(1,4,6);
-    assertTrue(testLapTime.equals(Task.all().get(0));
+    assertTrue(testLapTime.equals(Task.all().get(0)));
   }
 
   @Test
   public void timeFormattedAsString() {
-    LapTime testLapTime = new LapTime (0L, 603010L);
+    LapTime testLapTime = new LapTime (0L, 603010L, 0);
     assertEquals("00:10:03:10", testLapTime.getDifferenceAsString());
   }
 
