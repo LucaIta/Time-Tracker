@@ -17,7 +17,7 @@
 var h = 0;
 var m = 0;
 var s = 0;
-var ten = 1;
+var ten = 0;
 
 function startTime() {
     ten++;
@@ -31,14 +31,12 @@ function startTime() {
     }
     if (m >= 60) {
       h += 1;
+      m -= 60;
     }
-    var hour = h;
-    var min = checkTime(m);
-    var sec = checkTime(s);
-    //var tenths = checkTime(ten);
+
 
     document.getElementById('test').innerHTML =
-    hour + ":" + min + ":" + sec + "." + ten;
+    h + ":" + checkTime(m) + ":" + checkTime(s) + "." + ten;
     var t = setTimeout(startTime, 100);
 }
 
