@@ -93,4 +93,13 @@ public class Task {
     }
   }
 
+  public List<LapTime> getLapTimes() {
+    try (Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM lap_times WHERE task_id = :task_id";
+      List<LapTime> lapTimes = con.createQuery(sql).addParameter("task_id", this.getId()).executeAndFetch(LapTime.class);
+      return lapTimes;
+    }
+  }
+
+
 }

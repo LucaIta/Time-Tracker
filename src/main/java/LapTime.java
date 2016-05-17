@@ -10,9 +10,9 @@ class LapTime {
   private final long MILLIS_PER_MINUTE = 60000L;
   private final long MILLIS_PER_SECOND = 1000L;
 
-  public LapTime(long start_time, long end_time){
+  public LapTime(long start_time){
     this.start_time = start_time;
-    this.end_time = end_time;
+    // this.end_time = end_time;
   }
 
   public long getStartTime() {
@@ -28,7 +28,7 @@ class LapTime {
   }
 
   public int getTaskId() {
-    return task_id; // to be completed
+    return task_id;
 
   }
 
@@ -43,11 +43,11 @@ class LapTime {
 
   public void addToTask(Task task) { // not tested yet
     try (Connection con = DB.sql2o.open()){
-      String sql = "INSERT INTO lap_times (start_time,end_time,task_id) VALUES (:start_time, :end_time, :task_id)";
+      String sql = "INSERT INTO lap_times (start_time,task_id) VALUES (:start_time, :task_id)";
       this.task_id = task.getId();
-      this.id = (int) con.createQuery(sql, true).addParameter("start_time",this.start_time)
-                          .addParameter("end_time", this.end_time)
+      this.id = (int) con.createQuery(sql, true)
                           .addParameter("task_id", this.task_id)
+                          .addParameter("start_time", this.start_time)
                           .executeUpdate().getKey();
     }
   }
@@ -76,5 +76,9 @@ class LapTime {
     long milliseconds = deltaT;
     return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, milliseconds);
   }
+
+
+
+
 
 }
