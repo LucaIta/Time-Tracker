@@ -33,7 +33,7 @@ public class LapTimeTest {
   }
 
   @Test
-  public void LapTime_addTaskToDatabase() { // to test, not passed yet
+  public void LapTime_addTaskToDatabase() {
     LapTime testLapTime = new LapTime(1,4);
     Task testTask = new Task("Do the dishes", 1);
     testLapTime.addToTask(testTask);
