@@ -79,4 +79,14 @@ public class TaskTest {
     assertTrue(testLapTime.equals(testTask.getLapTimes().get(0)));
   }
 
+  // @Test // to complete
+  // public void saveGoal_savesGoalTimeCorrectly() {
+  //   Task testTask = new Task("Do the dishes", 1);
+  //   testTask.save();
+  //   testTask.saveGoal(1,20,00);
+  //   Task newTask = Task.find(testTask.getId());
+  //   assertEquals()
+  //
+  // }
+
 }

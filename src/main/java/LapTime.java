@@ -84,7 +84,7 @@ class LapTime {
   }
 
   public void saveStartTime() {
-    Long start_time = System.currentTimeMillis();
+    long start_time = System.currentTimeMillis();
     try (Connection con = DB.sql2o.open()) {
       String sql = "UPDATE lap_times SET start_time = :start_time WHERE id = :id";
       con.createQuery(sql).addParameter("start_time", start_time).addParameter("id", this.id).executeUpdate();
@@ -93,13 +93,16 @@ class LapTime {
   }
 
   public void saveEndTime() {
-    Long end_time = System.currentTimeMillis();
+    long end_time = System.currentTimeMillis();
     try (Connection con = DB.sql2o.open()) {
       String sql = "UPDATE lap_times SET end_time = :end_time WHERE id = :id";
       con.createQuery(sql).addParameter("end_time", end_time).addParameter("id", this.id).executeUpdate();
       this.end_time = end_time;
     }
   }
+
+
+
 
 
 }

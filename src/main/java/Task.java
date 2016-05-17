@@ -101,5 +101,16 @@ public class Task {
     }
   }
 
+  // public void saveGoal(int hours, int minutes, int seconds) { // do we need if statements to check for empty entries?
+  //   long goal = 0; // to test
+  //   goal += hours * MILLIS_PER_HOUR;
+  //   goal += minutes * MILLIS_PER_MINUTE;
+  //   goal += seconds * MILLIS_PER_SECOND;
+  //   try (Connection con = DB.sql2o.open()) {
+  //     String sql = "UPDATE tasks SET goal_time = :goal_time WHERE id = :id"
+  //     con.createQuery(sql).addParameter("goal_time", goal).addParameter("id", this.id()).executeUpdate();
+  //   }
+  // }
+
 
 }
