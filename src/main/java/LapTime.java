@@ -23,7 +23,7 @@ class LapTime {
     return end_time;
   }
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
@@ -76,6 +76,13 @@ class LapTime {
     long milliseconds = deltaT;
     return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, milliseconds);
   }
+
+  public static LapTime find(int id) {
+    try (Connection con = DB.sql2o.open()){
+      String sql = "SELECT * FROM lap_times WHERE id = :id";
+      return con.createQuery(sql).addParameter("id", id).executeAndFetchFirst(LapTime.class);
+  }
+}
 
 
 

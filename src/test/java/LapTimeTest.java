@@ -41,13 +41,14 @@ public class LapTimeTest {
   }
 
 
-  // @Test // nadia Test
-  // public void find_findsBandssInDatabase_True() {
-  //   Band myBand = new Band("Lotus");
-  //   myBand.save();
-  //   Band savedBand = Band.find(myBand.getId());
-  //   assertTrue(myBand.equals(savedBand));
-  // }
+  @Test
+  public void find_findsLapTimessInDatabase_True() {
+    LapTime testLapTime = new LapTime(1);
+    Task teskTask = new Task("Do the dishes", 1);
+    testLapTime.addToTask(teskTask);
+    LapTime savedLapTime = LapTime.find(testLapTime.getId());
+    assertTrue(testLapTime.equals(savedLapTime));
+  }
 
 
 
