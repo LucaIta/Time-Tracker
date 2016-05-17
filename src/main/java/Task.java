@@ -5,14 +5,14 @@ import java.util.List;
 public class Task {
   private int id;
   private String name;
-  private int goal_time;
-  private long goal_time_secs;//??!~?!?!!?
+  private long goal_time;
+  // private long goal_time_secs;//??!~?!?!!?
 
   //not stored in database?
-  private LocalTime starting_time;
-  private LocalTime end_time;
+  // private LocalTime starting_time;
+  // private LocalTime end_time;
 
-  public Task (String name, int goal_time) {
+  public Task (String name, long goal_time) {
     this.name = name;
     this.goal_time = goal_time;
   }
@@ -63,7 +63,7 @@ public class Task {
     }
   }
 
-  public void update(String name, int goal_time) {
+  public void update(String name, long goal_time) {
     if (name.trim().length() != 0) {
       try(Connection con = DB.sql2o.open()) {
         String sql = "UPDATE tasks SET name = :name WHERE id = :id";
