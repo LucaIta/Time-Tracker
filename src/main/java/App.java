@@ -20,11 +20,32 @@ public class App {
     post("/tasks", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       String input_task = request.queryParams("input_task");
-      int input_hh = Integer.parseInt(request.queryParams("input_hh"));
-      int input_mm = Integer.parseInt(request.queryParams("input_mm"));
-      int input_ss = Integer.parseInt(request.queryParams("input_ss"));
+      String hour = request.queryParams("input_hh");
+      String minute = request.queryParams("input_mm");
+      String second = request.queryParams("input_ss");
+      int number_hh;
+      int number_mm;
+      int number_ss;
 
-      long goal = input_hh + input_mm + input_ss; // This line need to change with Millisecond convertion method
+      if (hour.equals("")) {
+        number_hh = 0;
+      } else {
+        number_hh = Integer.parseInt(hour);
+      }
+
+      if (minute.equals("")) {
+        number_mm = 0;
+      } else {
+        number_mm = Integer.parseInt(minute);
+      }
+
+      if (second.equals("")) {
+        number_ss = 0;
+      } else {
+        number_ss = Integer.parseInt(second);
+      }
+
+      long goal = number_hh + number_mm + number_ss; // This line need to change with Millisecond convertion method
 
       Task newTask = new Task(input_task, goal);
       newTask.save();
@@ -68,7 +89,7 @@ public class App {
 
       String update_input = request.queryParams("update_input");
       routine.update(update_input);
-      
+
       response.redirect("/routines");
       return null;
     });
