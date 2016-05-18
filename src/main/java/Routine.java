@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class Routine {
   private int id;
   private String name;
-  private int currentTaskId;
+  private int taskIndex;
 
   public Routine (String name) {
     this.name = name;
-    this.currentTaskId = 0;
+    this.taskIndex = 0;
   }
 
   public String getName() {
@@ -113,16 +113,30 @@ public class Routine {
     }
   }
 
-  public void lap () {
+  public void logLap () {
     ArrayList<Task> tasks = getTasks();
     long time = System.currentTimeMillis();
 
+    //this should be an END() method in Task
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE tasks SET end_time = :end_time WHERE id = :task_id";
       con.createQuery(sql)
         .addParameter("end_time", time)
-        .addParameter("task_id", tasks.get(0).)
+        .addParameter("task_id", tasks.get(taskIndex).getId())
         .executeUpdate();
+    }
+    taskIndex++;
+    if (taskIndex >= tasks.size()) {
+      //then the list is over and the routine done
+    } else {
+      //this should be a START() method in Task
+      try(Connection con = DB.sql2o.open()) {
+        String sql = "UPDATE tasks SET end_time = :end_time WHERE id = :task_id";
+        con.createQuery(sql)
+          .addParameter("start_time", time)
+          .addParameter("task_id", tasks.get(taskIndex).getId())
+          .executeUpdate();
+      }
     }
   }
 
