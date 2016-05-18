@@ -113,30 +113,26 @@ public class Routine {
     }
   }
 
+  public void start() {
+    ArrayList<Task> tasks = getTasks();
+    tasks.get(0).start();
+  }
+
+  public void end() {
+    ArrayList<Task> tasks = getTasks();
+    tasks.get(0).end();
+  }
+
   public void logLap () {
     ArrayList<Task> tasks = getTasks();
     long time = System.currentTimeMillis();
 
-    //this should be an END() method in Task
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET end_time = :end_time WHERE id = :task_id";
-      con.createQuery(sql)
-        .addParameter("end_time", time)
-        .addParameter("task_id", tasks.get(taskIndex).getId())
-        .executeUpdate();
-    }
+    tasks.get(taskIndex).end();
     taskIndex++;
     if (taskIndex >= tasks.size()) {
-      //then the list is over and the routine done
+      end();
     } else {
-      //this should be a START() method in Task
-      try(Connection con = DB.sql2o.open()) {
-        String sql = "UPDATE tasks SET end_time = :end_time WHERE id = :task_id";
-        con.createQuery(sql)
-          .addParameter("start_time", time)
-          .addParameter("task_id", tasks.get(taskIndex).getId())
-          .executeUpdate();
-      }
+      tasks.get(taskIndex).start();
     }
   }
 
