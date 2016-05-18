@@ -12,23 +12,26 @@ public class App {
 
     get("/", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-
-      model.put("template", "templates/home.vtl");
+      model.put("tasks", Task.all());
+      model.put("template", "templates/index.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    // post(new Route("/insertElement") {
-    //   @Override
-    //   public Object handle(Request request, Response response) {
-    //     String item = (String) request.attribute("item");
-    //     String value = (String) request.attribute("value");
-    //     String dimension = (String) request.attribute("dimension");
-    //     Element e = new Element(item, value, dimension);
-    //     ElementDAO edao = new ElementDAO();
-    //     edao.insert(e);
-    //     JSONObject json = JSONObject.fromObject( e );
-    //     return json;
-    //   }
-    // });
+    post("/tasks", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      String input_task = request.queryParams("input_task");
+      int input_hh = Integer.parseInt(request.queryParams("input_hh"));
+      int input_mm = Integer.parseInt(request.queryParams("input_mm"));
+      int input_ss = Integer.parseInt(request.queryParams("input_ss"));
+
+      long goal = input_hh + input_mm + input_ss; // This line need to change with Millisecond convertion method
+
+      Task newTask = new Task(input_task, goal);
+      newTask.save();
+
+      response.redirect("/");
+      return null;
+    });
+
   }
 }
