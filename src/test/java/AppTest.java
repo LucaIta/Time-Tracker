@@ -40,4 +40,12 @@ public class AppTest extends FluentTest {
     submit("#input_goal_button");
     assertThat(pageSource()).contains("Jumping jack 50 times");
   }
+
+  @Test
+  public void routineIsCreateAndDisplayedTest() {
+    goTo("http://localhost:4567/routines");
+    fill("#input_routine").with("Routine Number 1");
+    submit("#routine_button");
+    assertThat(pageSource()).contains("Routine Number 1");
+  }
 }

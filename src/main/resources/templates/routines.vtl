@@ -1,0 +1,30 @@
+<h1>Routine</h1>
+<a href="/">Home</a>
+<hr>
+
+<div class="row">
+  <div class="col-sm-6">
+    <form action="/routines" method="post">
+      <h3><label for="input_routine">Create your new routine here</label></h3>
+      <input type="text" id="input_routine" name="input_routine" class="form-control" required>
+      <br>
+      <br>
+      <button type="submit" id="routine_button" class="btn btn-success">Create</button>
+    </form>
+    <hr>
+
+
+
+  </div>
+
+  <div class="col-sm-6">
+    #if ($routines.size() != 0)
+      <h2>All Routines</h2>
+      <ul>
+        #foreach ($routine in $routines)
+          <li><a href="/routines/$routine.getId()">$routine.getName()</a></li>
+        #end
+      </ul>
+    #end
+  </div>
+</div>

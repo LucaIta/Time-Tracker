@@ -26,7 +26,6 @@ public class App {
 
       long goal = input_hh + input_mm + input_ss; // This line need to change with Millisecond convertion method
 
-
       Task newTask = new Task(input_task, goal);
       newTask.save();
 
@@ -34,5 +33,13 @@ public class App {
       return null;
     });
 
+    get("/routines", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("routines", Routine.all());
+      model.put("template", "templates/routines.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    
   }
 }
