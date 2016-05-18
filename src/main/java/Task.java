@@ -6,6 +6,9 @@ public class Task {
   private int id;
   private String name;
   private long goal_time;
+  private final long MILLIS_PER_HOUR = 3600000L;
+  private final long MILLIS_PER_MINUTE = 60000L;
+  private final long MILLIS_PER_SECOND = 1000L;
   // private long goal_time_secs;//??!~?!?!!?
 
   //not stored in database?
@@ -23,6 +26,10 @@ public class Task {
 
   public int getId() {
     return id;
+  }
+
+  public long getGoalTime() {
+    return goal_time;
   }
 
   public static List<Task> all() {
@@ -101,16 +108,16 @@ public class Task {
     }
   }
 
-  // public void saveGoal(int hours, int minutes, int seconds) { // do we need if statements to check for empty entries?
-  //   long goal = 0; // to test
-  //   goal += hours * MILLIS_PER_HOUR;
-  //   goal += minutes * MILLIS_PER_MINUTE;
-  //   goal += seconds * MILLIS_PER_SECOND;
-  //   try (Connection con = DB.sql2o.open()) {
-  //     String sql = "UPDATE tasks SET goal_time = :goal_time WHERE id = :id"
-  //     con.createQuery(sql).addParameter("goal_time", goal).addParameter("id", this.id()).executeUpdate();
-  //   }
-  // }
+  public void saveGoal(int hours, int minutes, int seconds) { //need if statements in App.java to check for empty entries!
+    long goal = 0;
+    goal += hours * MILLIS_PER_HOUR;
+    goal += minutes * MILLIS_PER_MINUTE;
+    goal += seconds * MILLIS_PER_SECOND;
+    try (Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE tasks SET goal_time = :goal_time WHERE id = :id";
+      con.createQuery(sql).addParameter("goal_time", goal).addParameter("id", this.id).executeUpdate();
+    }
+  }
 
 
 }
