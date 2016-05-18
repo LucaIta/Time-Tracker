@@ -45,7 +45,7 @@ public class Task {
       return false;
     } else {
       Task newTask = (Task) otherTask;
-      return this.getName().equals(newTask.getName()) && this.getId() == newTask.getId();
+      return this.getName().equals(newTask.getName()) && this.getId() == newTask.getId() &&                                 this.getGoalTime() == newTask.getGoalTime();
     }
   }
 
@@ -117,6 +117,17 @@ public class Task {
       String sql = "UPDATE tasks SET goal_time = :goal_time WHERE id = :id";
       con.createQuery(sql).addParameter("goal_time", goal).addParameter("id", this.id).executeUpdate();
     }
+  }
+
+  public String getTimeAsString(long deltaT) {
+    long hours = deltaT / MILLIS_PER_HOUR;
+    deltaT -= hours * MILLIS_PER_HOUR;
+    long minutes = deltaT / MILLIS_PER_MINUTE;
+    deltaT -= minutes * MILLIS_PER_MINUTE;
+    long seconds = deltaT / MILLIS_PER_SECOND;
+    deltaT -= seconds * MILLIS_PER_SECOND;
+    long milliseconds = deltaT;
+    return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, milliseconds);
   }
 
 

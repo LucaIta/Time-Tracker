@@ -3,6 +3,8 @@ import java.util.HashMap;
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 import static spark.Spark.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class App {
@@ -32,6 +34,26 @@ public class App {
       response.redirect("/");
       return null;
     });
+
+    get("/timerDisplayer", (request, response) -> {  // this is just a test
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("tasks", Task.all());
+      model.put("testLapTime", Task.all().get(0).getLapTimes().get(0));
+      System.out.println(Task.all().get(0).getLapTimes().get(0).getId());
+
+      // probably later they will be only the tasks of this routine
+      // ArrayList<LapTime> laptimes = new ArrayList<LapTime>();
+      // for (Task task : Task.all()) {
+      //   laptimes.add(task.getLapTimes().get(0)); // this will retrieve all the tasks;
+      //   System.out.println(task.getId());
+      // }
+      // model.put("laptimes", laptimes);
+      // System.out.println(laptimes.get(0).getTaskId());
+      // System.out.println(laptimes.get(1).getTaskId());
+      // System.out.println(laptimes.get(2).getTaskId());
+      model.put("template", "templates/timer_board.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
   }
 }

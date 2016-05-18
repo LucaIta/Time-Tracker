@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  alert("Success!");
+  // alert("Success!");
 
   $("form").submit(function(event) {
     event.preventDefault();
