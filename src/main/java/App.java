@@ -33,6 +33,7 @@ public class App {
       return null;
     });
 
+// Routine section --------------------
     get("/routines", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("routines", Routine.all());
@@ -40,6 +41,23 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    
+    post("/routines/add_new", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      String input_routine = request.queryParams("input_routine");
+      Routine newRoutine = new Routine(input_routine);
+      newRoutine.save();
+      response.redirect("/routines");
+      return null;
+    });
+
+    post("/routines/delete", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      String delete_routine = request.queryParams("delete_routine");
+      Routine routine = Routine.find(Integer.parseInt(delete_routine));
+      routine.delete();
+      response.redirect("/routines");
+      return null;
+    });
+
   }
 }

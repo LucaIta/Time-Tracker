@@ -42,10 +42,20 @@ public class AppTest extends FluentTest {
   }
 
   @Test
-  public void routineIsCreateAndDisplayedTest() {
+  public void newRoutineIsFilledAndDisplayedTest() {
     goTo("http://localhost:4567/routines");
     fill("#input_routine").with("Routine Number 1");
-    submit("#routine_button");
+    submit("#add_routine_button");
     assertThat(pageSource()).contains("Routine Number 1");
+  }
+
+  @Test
+  public void routineIsDeletedTest() {
+    Routine testRoutine = new Routine("Routine Number 1");
+    testRoutine.save();
+    goTo("http://localhost:4567/routines");
+    click("option", withText("Routine Number 1"));
+    submit("#delete_routine_button");
+    assertThat(pageSource()).doesNotContain("Routine Number 1");
   }
 }

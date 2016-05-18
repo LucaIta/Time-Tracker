@@ -3,26 +3,36 @@
 <hr>
 
 <div class="row">
-  <div class="col-sm-6">
-    <form action="/routines" method="post">
+  <div class="col-sm-5">
+    <form action="/routines/add_new" method="post">
       <h3><label for="input_routine">Create your new routine here</label></h3>
       <input type="text" id="input_routine" name="input_routine" class="form-control" required>
       <br>
-      <br>
-      <button type="submit" id="routine_button" class="btn btn-success">Create</button>
+      <button type="submit" id="add_routine_button" class="btn btn-success">Create</button>
     </form>
     <hr>
 
+    <form action="/routines/delete" method="post" class="form-group">
+      <h3><label for="delete_routine">Select a routine to delete</label></h3>
+      <select id="delete_routine" name="delete_routine" type="text" class="form-control">
+        <option value="">select here</option>
+        #foreach($routine in $routines)
+          <option value="$routine.getId()">$routine.getName()</option>
+        #end
+      </select>
+      <br>
+      <button id="delete_routine_button" type="submit" class="btn btn-danger">Delete</button>
+    </form>
 
 
   </div>
 
-  <div class="col-sm-6">
+  <div class="col-sm-5 col-sm-offset-1">
     #if ($routines.size() != 0)
-      <h2>All Routines</h2>
+      <h3>List of all routines</h3>
       <ul>
         #foreach ($routine in $routines)
-          <li><a href="/routines/$routine.getId()">$routine.getName()</a></li>
+          <li>$routine.getName()</li>
         #end
       </ul>
     #end
