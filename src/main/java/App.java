@@ -53,8 +53,22 @@ public class App {
     post("/routines/delete", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       String delete_routine = request.queryParams("delete_routine");
-      Routine routine = Routine.find(Integer.parseInt(delete_routine));
-      routine.delete();
+      if (!(delete_routine.equals(""))) {
+        Routine routine = Routine.find(Integer.parseInt(delete_routine));
+        routine.delete();
+      }
+      response.redirect("/routines");
+      return null;
+    });
+
+    post("/routines/update", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      String update_routine = request.queryParams("update_routine");
+      Routine routine = Routine.find(Integer.parseInt(update_routine));
+
+      String update_input = request.queryParams("update_input");
+      routine.update(update_input);
+      
       response.redirect("/routines");
       return null;
     });

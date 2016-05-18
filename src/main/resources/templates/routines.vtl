@@ -5,7 +5,7 @@
 <div class="row">
   <div class="col-sm-5">
     <form action="/routines/add_new" method="post">
-      <h3><label for="input_routine">Create your new routine here</label></h3>
+      <h3><label for="input_routine">Create your new routine</label></h3>
       <input type="text" id="input_routine" name="input_routine" class="form-control" required>
       <br>
       <button type="submit" id="add_routine_button" class="btn btn-success">Create</button>
@@ -13,7 +13,7 @@
     <hr>
 
     <form action="/routines/delete" method="post" class="form-group">
-      <h3><label for="delete_routine">Select a routine to delete</label></h3>
+      <h3><label for="delete_routine">Select a routine to DELETE</label></h3>
       <select id="delete_routine" name="delete_routine" type="text" class="form-control">
         <option value="">select here</option>
         #foreach($routine in $routines)
@@ -23,7 +23,21 @@
       <br>
       <button id="delete_routine_button" type="submit" class="btn btn-danger">Delete</button>
     </form>
+    <hr>
 
+    <form action="/routines/update" method="post" class="form-group">
+      <h3><label for="update_routine">Select a routine to UPDATE</label></h3>
+      <select id="update_routine" name="update_routine" type="text" class="form-control" required>
+        <option value="">select here</option>
+        #foreach($routine in $routines)
+          <option value="$routine.getId()">$routine.getName()</option>
+        #end
+      </select>
+      <br>
+      <input type="text" id="update_input" name="update_input" class="form-control" placeholder="Fill update here">
+      <br>
+      <button id="update_routine_button" type="submit" class="btn btn-primary">Update</button>
+    </form>
 
   </div>
 
