@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Routine {
   private int id;
   private String name;
-  private int taskIndex;
+  private int taskIndex;        //needs to be saved to Database every logLap
 
   public Routine (String name) {
     this.name = name;
@@ -114,18 +114,17 @@ public class Routine {
   }
 
   public void start() {
-    ArrayList<Task> tasks = getTasks();
+    List<Task> tasks = getTasks();
     tasks.get(0).start();
   }
 
   public void end() {
-    ArrayList<Task> tasks = getTasks();
+    List<Task> tasks = getTasks();
     tasks.get(0).end();
   }
 
-  public void logLap () {
-    ArrayList<Task> tasks = getTasks();
-    long time = System.currentTimeMillis();
+  public void logLap (long time) {
+    List<Task> tasks = getTasks();
 
     tasks.get(taskIndex).end();
     taskIndex++;
@@ -133,6 +132,13 @@ public class Routine {
       end();
     } else {
       tasks.get(taskIndex).start();
+    }
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE routines SET taskIndex = :task_index WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("task_index", this.task_index)
+        .addParameter("id", this.getId())
+        .executeUpdate();
     }
   }
 

@@ -6,6 +6,7 @@ class LapTime {
   private long start_time;
   private long end_time;
   private int task_id;
+  private int run_id;     //this is just a test
   private final long MILLIS_PER_HOUR = 3600000L;
   private final long MILLIS_PER_MINUTE = 60000L;
   private final long MILLIS_PER_SECOND = 1000L;
@@ -73,7 +74,7 @@ class LapTime {
     long seconds = deltaT / MILLIS_PER_SECOND;
     deltaT -= seconds * MILLIS_PER_SECOND;
     long milliseconds = deltaT;
-    return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, milliseconds);
+    return String.format("%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
   }
 
   public static LapTime find(int id) {

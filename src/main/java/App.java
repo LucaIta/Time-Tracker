@@ -44,7 +44,7 @@ public class App {
       int routineId = Integer.parseInt(request.params("id"));
       Routine routine = Routine.find(routineId);
       long time = System.currentTimeMillis();
-      routine.lap(time);
+      routine.logLap(time);
 
       String url = String.format("http://localhost:4567/routines/%d", routineId);
       response.redirect(url);
