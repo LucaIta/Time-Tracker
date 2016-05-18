@@ -3,9 +3,6 @@ import java.util.HashMap;
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 import static spark.Spark.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 
 public class App {
@@ -20,29 +17,25 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    post("/lap", (request, response) -> {
-      Map<String, Object> model = new HashMap<String, Object>();
-      //pull time off timer in page
-      //
-      WebDriver wd = new WebDriver();
-      String time = wd.findElement(By.cssSelector("div[id^='main'] span.test")).getText();
+    post("routines/:id/lap", (request, response) -> {
+      int routineId = Integer.parseInt(request.params("id"));
+      Routine routine = Routine.find(routineId);
+      long time = System.currentTimeMillis();
+      routine.lap(time);
 
-      model.put("template", "templates/home.vtl");
+      String url = String.format("http://localhost:4567/routines/%d", routineId);
+      response.redirect(url);
+      return null;
+    });
+
+    get("/routines/:id", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      int routineId = Integer.parseInt(request.params("id"));
+      Routine routine = Routine.find(routineId);
+      model.put("routine", routine);
+      model.put("template", "templates/timer.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    post(new Route("/insertElement") {
-      @Override
-      public Object handle(Request request, Response response) {
-        String item = (String) request.attribute("item");
-        String value = (String) request.attribute("value");
-        String dimension = (String) request.attribute("dimension");
-        Element e = new Element(item, value, dimension);
-        ElementDAO edao = new ElementDAO();
-        edao.insert(e);
-        JSONObject json = JSONObject.fromObject( e );
-        return json;
-      }
-    });
   }
 }
