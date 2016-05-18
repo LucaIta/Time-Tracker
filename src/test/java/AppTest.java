@@ -24,9 +24,28 @@ public class AppTest extends FluentTest {
   @Rule
     public DatabaseRule database = new DatabaseRule();
 
-  // @Test
-  // public void rootTest() {
-  //   goTo("http://localhost:4567/");
-  //   assertThat(pageSource()).contains("");
-  // }
+  @Test
+  public void rootTest() {
+    goTo("http://localhost:4567/");
+    assertThat(pageSource()).contains("Time Tracker");
+  }
+
+  @Test
+  public void taskIsCreateAndDisplayedTest() {
+    goTo("http://localhost:4567/");
+    fill("#input_task").with("Jumping jack 50 times");
+    fill("#input_hh").with("0");
+    fill("#input_mm").with("0");
+    fill("#input_ss").with("60");
+    submit("#input_goal_button");
+    assertThat(pageSource()).contains("Jumping jack 50 times");
+  }
+
+  @Test
+  public void routineIsCreateAndDisplayedTest() {
+    goTo("http://localhost:4567/routines");
+    fill("#input_routine").with("Routine Number 1");
+    submit("#routine_button");
+    assertThat(pageSource()).contains("Routine Number 1");
+  }
 }
