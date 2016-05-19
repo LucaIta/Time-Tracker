@@ -20,7 +20,7 @@ public class App {
     }, new VelocityTemplateEngine());
 
     //Noah's routes for the timer
-    post("/timer/createRun/:routine_id", (request, response) -> {
+    post("/timer/createrun/:routine_id", (request, response) -> {
       int routineId = Integer.parseInt(request.params("routine_id"));
       Routine routine = Routine.find(routineId);
       Run newRun = new Run(routine.getId());
@@ -34,7 +34,7 @@ public class App {
       Map<String, Object> model = new HashMap<String, Object>();
       int runId = Integer.parseInt(request.params("run_id"));
       model.put("run", Run.find(runId));
-      model.put("template", "templates/timer.vtl");
+      model.put("template", "templates/home.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
