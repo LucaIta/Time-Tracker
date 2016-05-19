@@ -72,7 +72,7 @@ public class LapTimeTest {
     testLapTime.saveEndTime();
     LapTime newLapTime = LapTime.find(testLapTime.getId());
     long difference = newLapTime.getEndTime() - newLapTime.getStartTime();
-    assertTrue(difference < 10);
+    assertTrue(difference < 100);
   }
 
 

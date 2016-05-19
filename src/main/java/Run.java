@@ -6,8 +6,8 @@ public class Run {
   private int routine_id;
   private int id;
 
-  public Run (int id) {
-    this.id = id;
+  public Run (int routine) {
+    this.routine_id = routine;
   }
 
   public int getId() {
@@ -17,7 +17,7 @@ public class Run {
   public int getRoutineId() {
     return routine_id;
   }
-  //edit this
+  
   public static List<Run> all() {
     String sql = "SELECT * FROM runs;";
     try (Connection con = DB.sql2o.open()) {

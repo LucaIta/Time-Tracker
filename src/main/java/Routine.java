@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class Routine {
   private int id;
   private String name;
-  private int taskIndex;        //needs to be saved to Database every logLap
+  private int task_index;        //needs to be saved to Database every logLap
 
   public Routine (String name) {
     this.name = name;
-    this.taskIndex = 0;
+    this.task_index = 0;
   }
 
   public String getName() {
@@ -126,15 +126,15 @@ public class Routine {
   public void logLap (long time) {
     List<Task> tasks = getTasks();
 
-    tasks.get(taskIndex).end();
-    taskIndex++;
-    if (taskIndex >= tasks.size()) {
+    tasks.get(task_index).end();
+    task_index++;
+    if (task_index >= tasks.size()) {
       end();
     } else {
-      tasks.get(taskIndex).start();
+      tasks.get(task_index).start();
     }
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE routines SET taskIndex = :task_index WHERE id = :id";
+      String sql = "UPDATE routines SET task_index = :task_index WHERE id = :id";
       con.createQuery(sql)
         .addParameter("task_index", this.task_index)
         .addParameter("id", this.getId())

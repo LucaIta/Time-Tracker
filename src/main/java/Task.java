@@ -128,6 +128,7 @@ public class Task {
         .addParameter("task_id", this.getId())
         .executeUpdate();
     }
+  }
 
   public void saveGoal(int hours, int minutes, int seconds) { //need if statements in App.java to check for empty entries!
     long goal = 0;
