@@ -71,4 +71,18 @@ public class AppTest extends FluentTest {
     assertThat(pageSource()).contains("My Morning");
   }
 
+// Add Tasks to Routine section --------------------
+  @Test
+  public void taskIsAddedToRoutineTest() {
+    Routine testRoutine = new Routine("Routine Number 1");
+    testRoutine.save();
+    Task testTask = new Task("Jumping jack 50 times", 60000);
+    testTask.save();
+    goTo("http://localhost:4567/routines_tasks");
+    click("option", withText("Routine Number 1")); // select a routine from dropdown
+    find(".task_id").first().click(); // checkbox for tasks
+    submit("#add_relation");
+    assertThat(pageSource()).contains("Routine Number 1");
+  }
+
 }

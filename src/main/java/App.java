@@ -12,6 +12,7 @@ public class App {
     staticFileLocation("/public");
     String layout = "templates/layout.vtl";
 
+// Home section --------------------
     get("/", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("tasks", Task.all());
@@ -106,6 +107,34 @@ public class App {
       response.redirect("/routines");
       return null;
     });
+
+// Add Tasks to Routine section --------------------
+    get("/routines_tasks", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("allRoutines", Routine.all());
+      model.put("allTasks", Task.all());
+      model.put("template", "templates/routines_tasks.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/routines_tasks", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      String selectedRoutine = request.queryParams("select_routine");
+      Routine routine = Routine.find(Integer.parseInt(selectedRoutine));
+
+      String[] selectedTaskIds = request.queryParamsValues("task_id");
+      if(selectedTaskIds != null) {
+        for (String eachTaskId : selectedTaskIds) {
+          Task task = Task.find(Integer.parseInt(eachTaskId));
+          routine.addTask(task);
+        }
+        response.redirect("/routines_tasks");
+        return null;
+      } else {
+        model.put("template", "templates/error.vtl");
+        return new ModelAndView(model, layout);
+      }
+    }, new VelocityTemplateEngine());
 
   }
 }
