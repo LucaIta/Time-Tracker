@@ -6,6 +6,7 @@ public class Routine {
   private int id;
   private String name;
   private int task_index;        //needs to be saved to Database every logLap
+  private int lap_id;            //oh wow do I really need this?
 
   public Routine (String name) {
     this.name = name;
@@ -19,6 +20,10 @@ public class Routine {
   public int getId() {
     return id;
   }
+
+  // public int getLapId() {
+  //   return lap_id;
+  // }
 
   public static List<Routine> all() {
     String sql = "SELECT * FROM routines;";
@@ -113,25 +118,48 @@ public class Routine {
     }
   }
 
-  public void start() {
+  public void start(int run_id) {
     List<Task> tasks = getTasks();
-    tasks.get(0).start();
+    //int lap_id = tasks.get(0).start(run_id);
+    int task_id = tasks.get(task_index).getId();
+
+    //TESTING BEGIN
+    long time = System.currentTimeMillis();
+    try(Connection con = DB.sql2o.open()) {
+      //String sql = "UPDATE lap_times SET start_time = :start_time WHERE id = :task_id";
+      String sql = "INSERT lap_times SET (start_time, task_id, run_id) VALUES (:start_time, :task_id, :run_id) RETURNING id";
+      int lap_id = (int) con.createQuery(sql, true)
+        .addParameter("start_time", time)
+        .addParameter("task_id", task_id)
+        .addParameter("run_id", run_id)
+        .executeUpdate()
+        .getKey();
+    }
+    //TESTING END
+
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE routines SET lap_id = :lap_id WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("lap_id", lap_id)
+        .addParameter("id", this.getId())
+        .executeUpdate();
+    }
   }
 
   public void end() {
     List<Task> tasks = getTasks();
-    tasks.get(task_index).end();      //should this be task_index?  Will that be out of bounds?
+    tasks.get(task_index).end(this.lap_id);      //should this be task_index?  Will that be out of bounds?
   }
 
-  public void logLap (long time) {
+  public void logLap (int runId) {
     List<Task> tasks = getTasks();
 
-    tasks.get(task_index).end();
+    tasks.get(task_index).end(this.lap_id);
     task_index++;
     if (task_index >= tasks.size()) {
       end();
     } else {
-      tasks.get(task_index).start();
+      tasks.get(task_index).start(runId);
     }
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE routines SET task_index = :task_index WHERE id = :id";

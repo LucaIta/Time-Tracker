@@ -1,0 +1,42 @@
+<div class="">
+  <!-- //timer// -->
+</div>
+<div id="board">
+  <table style="width:100%">
+    <tr>
+      <th>Task</th>
+      <th>Goal Time</th>
+      <th>Your Time</th>
+      <th>Time Difference</th>
+    </tr>
+    #foreach ($task in $routine.getTasks())
+      <tr>
+        <td>$task.getName()</td>
+
+        <td>$task.getTimeAsString($task.getGoalTime())</td>
+
+        #foreach ($laptime in $task.getLapTimes())
+          #if ($laptime.getTaskId() == $task.getId())
+            <td>$laptime.getTimeAsString($laptime.getEndTime())</td>
+            <td>$laptime.getTimeAsString($laptime.getDifference())</td>
+          #else
+          something broke
+          #end
+        #end
+      </tr>
+    #end
+</table>
+</div>
+
+<hr>
+
+
+<form action="/timer/$run.getId()/start" method="post">
+  <button class="btn btn-success" type="submit">Start</button>
+</form>
+<form action="/timer/lap/$run.getId()" method="post">
+  <button class="btn btn-info" type="submit">Lap</button>
+</form>
+<form action="/timer/stop/$run.getId()" method="post">
+  <button class="btn btn-danger" type="submit">Stop</button>
+</form>

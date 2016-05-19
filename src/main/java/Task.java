@@ -108,24 +108,29 @@ public class Task {
     }
   }
 
-  public void start() {
+  //give run_id, returns lap_id
+  public int start(int run_id) {
     long time = System.currentTimeMillis();
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE lap_times SET start_time = :start_time WHERE id = :task_id";
-      con.createQuery(sql)
+      //String sql = "UPDATE lap_times SET start_time = :start_time WHERE id = :task_id";
+      String sql = "INSERT lap_times SET (start_time, task_id, run_id) VALUES (:start_time, :task_id, :run_id) RETURNING id";
+      int id = (int) con.createQuery(sql, true)
         .addParameter("start_time", time)
         .addParameter("task_id", this.getId())
-        .executeUpdate();
+        .addParameter("run_id", run_id)
+        .executeUpdate()
+        .getKey();
     }
+    return id;
   }
 
-  public void end() {
+  public void end(int lap_id) {
     long time = System.currentTimeMillis();
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET end_time = :end_time WHERE id = :task_id";
+      String sql = "UPDATE lap_times SET end_time = :end_time WHERE id = :lap_id";
       con.createQuery(sql)
         .addParameter("end_time", time)
-        .addParameter("task_id", this.getId())
+        .addParameter("lap_id", lap_id)
         .executeUpdate();
     }
   }
