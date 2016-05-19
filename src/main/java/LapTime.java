@@ -13,7 +13,6 @@ public class LapTime {
 
   public LapTime(long start_time){
     this.start_time = start_time;
-    // this.end_time = end_time;
   }
 
   public long getStartTime() {
@@ -32,7 +31,7 @@ public class LapTime {
     return task_id;
   }
 
-  public static List<LapTime> all() { // not tested yet
+  public static List<LapTime> all() {
     try (Connection con = DB.sql2o.open()){
       String sql = "SELECT * FROM lap_times";
       List<LapTime> laptimes = con.createQuery(sql).executeAndFetch(LapTime.class);
@@ -41,7 +40,7 @@ public class LapTime {
   }
 
 
-  public void addToTask(Task task) { // not tested yet
+  public void addToTask(Task task) {
     try (Connection con = DB.sql2o.open()){
       String sql = "INSERT INTO lap_times (start_time,task_id) VALUES (:start_time, :task_id)";
       this.task_id = task.getId();
@@ -106,18 +105,6 @@ public class LapTime {
     }
   }
 
-    // public List<LapTime> getLapTimes()
-
-  // public static long getAverageTime(ArrayList<Long> timesList) { // this works
-  //   long sum_time = 0L;
-  //   for (Long time : timesList) {
-  //     sum_time += time;
-  //   }
-  //   long averTime;
-  //   averTime = sum_time / timesList.size();
-  //   return averTime;
-  // }
-
   public static long getAverageTime(List<LapTime> timesList) {
     long sum_time = 0L;
     for (LapTime time : timesList) {
@@ -128,17 +115,6 @@ public class LapTime {
     averTime = sum_time / timesList.size();
     return averTime;
   }
-
-  // public static long getBestTime(ArrayList<Long> timesList) {
-  //   long best_time;
-  //   best_time = timesList.get(0);
-  //   for (Long time : timesList) {
-  //     if (time < best_time) {
-  //       best_time = time;
-  //     }
-  //   }
-  //   return best_time;
-  // }
 
   public static long getBestTime(List<LapTime> lapTimes) {
 
@@ -157,14 +133,6 @@ public class LapTime {
     }
     return best_time;
   }
-
-  // public static long getTotalTime(ArrayList<Long> timesList) {
-  //   long total_time = 0L;
-  //   for (Long time : timesList) {
-  //     total_time += time;
-  //   }
-  //   return total_time;
-  // }
 
   public static long getTotalTime(List<LapTime> timesList) {
     long total_time = 0L;

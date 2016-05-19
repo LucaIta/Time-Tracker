@@ -45,7 +45,9 @@ public class Task {
       return false;
     } else {
       Task newTask = (Task) otherTask;
-      return this.getName().equals(newTask.getName()) && this.getId() == newTask.getId() &&                                 this.getGoalTime() == newTask.getGoalTime();
+      return this.getName().equals(newTask.getName()) &&
+             this.getId() == newTask.getId() &&
+             this.getGoalTime() == newTask.getGoalTime();
     }
   }
 
@@ -108,7 +110,7 @@ public class Task {
     }
   }
 
-  public void saveGoal(int hours, int minutes, int seconds) { //need if statements in App.java to check for empty entries!
+  public void saveGoal(int hours, int minutes, int seconds) {
     long goal = 0;
     goal += hours * MILLIS_PER_HOUR;
     goal += minutes * MILLIS_PER_MINUTE;
@@ -129,6 +131,4 @@ public class Task {
     long milliseconds = deltaT;
     return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, milliseconds);
   }
-
-
 }

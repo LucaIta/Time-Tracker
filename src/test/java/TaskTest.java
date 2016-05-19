@@ -87,5 +87,4 @@ public class TaskTest {
     Task newTask = Task.find(testTask.getId());
     assertEquals(4800000,newTask.getGoalTime());
   }
-
 }

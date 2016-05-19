@@ -42,7 +42,6 @@ public class LapTimeTest {
     assertTrue(testLapTime.equals(LapTime.all().get(0)));
   }
 
-
   @Test
   public void find_findsLapTimessInDatabase_True() {
     LapTime testLapTime = new LapTime(1);
@@ -51,10 +50,6 @@ public class LapTimeTest {
     LapTime savedLapTime = LapTime.find(testLapTime.getId());
     assertTrue(testLapTime.equals(savedLapTime));
   }
-
-
-
-
 
 //----already passing, coment out becouse got rid off end_time from constructor, test one more time when we have GET method time_lap----//
 
@@ -134,5 +129,4 @@ public class LapTimeTest {
     laptimes.add(testLapTime3);
     assertTrue(System.currentTimeMillis() * 3 > LapTime.getTotalTime(laptimes));
   }
-
 }

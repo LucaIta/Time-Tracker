@@ -82,14 +82,14 @@ public class Routine {
   }
 
   public void addTask(Task task) {
-      try(Connection con = DB.sql2o.open()) {
-        String sql = "INSERT INTO routines_tasks (routine_id, task_id) VALUES (:routine_id, :task_id)";
-        con.createQuery(sql)
-          .addParameter("routine_id", this.getId())
-          .addParameter("task_id", task.getId())
-          .executeUpdate();
-      }
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO routines_tasks (routine_id, task_id) VALUES (:routine_id, :task_id)";
+      con.createQuery(sql)
+        .addParameter("routine_id", this.getId())
+        .addParameter("task_id", task.getId())
+        .executeUpdate();
     }
+  }
 
   public List<Task> getTasks() {
     try(Connection con = DB.sql2o.open()){
@@ -110,5 +110,4 @@ public class Routine {
       return tasks;
     }
   }
-
 }
