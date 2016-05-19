@@ -1,0 +1,45 @@
+<h1>Update/Delete Tasks</h1>
+<hr>
+
+<div class="row">
+  <div class="col-sm-5">
+    <form action="/tasks/delete" method="post" class="form-group">
+      <h3><label for="delete_task">Select a task to DELETE</label></h3>
+      <select id="delete_task" name="delete_task" type="text" class="form-control">
+        <option value="">select here</option>
+        #foreach($task in $tasks)
+          <option value="$task.getId()">$task.getName()</option>
+        #end
+      </select>
+      <br>
+      <button id="delete_task_button" type="submit" class="btn btn-danger">Delete</button>
+    </form>
+    <hr>
+
+    <form action="/tasks/update" method="post" class="form-group">
+      <h3><label for="update_task">Select a task to UPDATE</label></h3>
+      <select id="update_task" name="update_task" type="text" class="form-control" required>
+        <option value="">select here</option>
+        #foreach($task in $tasks)
+          <option value="$task.getId()">$task.getName()</option>
+        #end
+      </select>
+      <br>
+      <input type="text" id="update_input" name="update_input" class="form-control" placeholder="Fill update here">
+      <br>
+      <button id="update_task_button" type="submit" class="btn btn-primary">Update</button>
+    </form>
+
+  </div>
+
+  <div class="col-sm-5 col-sm-offset-1">
+    #if ($tasks.size() != 0)
+      <h3>List of all tasks</h3>
+      <ul>
+        #foreach ($task in $tasks)
+          <li>$task.getName()</li>
+        #end
+      </ul>
+    #end
+  </div>
+</div>

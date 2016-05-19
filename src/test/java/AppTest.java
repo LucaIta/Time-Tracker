@@ -85,4 +85,15 @@ public class AppTest extends FluentTest {
     assertThat(pageSource()).contains("Routine Number 1");
   }
 
+// Routine section --------------------
+  @Test
+  public void taskIsDeletedTest() {
+    Task testTask = new Task("Running", 100000);
+    testTask.save();
+    goTo("http://localhost:4567/tasks");
+    click("option", withText("Running"));
+    submit("#delete_task_button");
+    assertThat(pageSource()).doesNotContain("Running");
+  }
+
 }
