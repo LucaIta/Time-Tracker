@@ -102,5 +102,15 @@ public class LapTimeTest {
     assertEquals(1000L, LapTime.getBestTime(times));
   }
 
-
+  @Test
+  public void getTotalTime() {
+    long time1 = 1000L;
+    long time2 = 2000L;
+    long time3 = 3000L;
+    ArrayList<Long> times = new ArrayList<Long>();
+    times.add(time1);
+    times.add(time2);
+    times.add(time3);
+    assertEquals(6000L, LapTime.getTotalTime(times));
+  }
 }

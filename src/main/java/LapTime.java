@@ -127,5 +127,11 @@ public class LapTime {
     return best_time;
   }
 
-
+  public static long getTotalTime(ArrayList<Long> timesList) {
+    long total_time = 0L;
+    for (Long time : timesList) {
+      total_time += time;
+    }
+    return total_time;
+  }
 }
