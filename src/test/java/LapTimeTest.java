@@ -1,6 +1,9 @@
 import org.sql2o.*;
 import org.junit.*;
 import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class LapTimeTest {
 
@@ -73,6 +76,18 @@ public class LapTimeTest {
     LapTime newLapTime = LapTime.find(testLapTime.getId());
     long difference = newLapTime.getEndTime() - newLapTime.getStartTime();
     assertTrue(difference < 10);
+  }
+
+  @Test
+  public void getAverageTime() {
+    long time1 = 1000L;
+    long time2 = 2000L;
+    long time3 = 3000L;
+    ArrayList<Long> times = new ArrayList<Long>();
+    times.add(time1);
+    times.add(time2);
+    times.add(time3);
+    assertEquals(2000L, LapTime.getAverageTime(times));
   }
 
 

@@ -1,5 +1,6 @@
 import org.sql2o.*;
 import java.util.List;
+import java.util.ArrayList;
 
 public class LapTime {
   private int id;
@@ -103,5 +104,15 @@ public class LapTime {
       con.createQuery(sql).addParameter("end_time", end_time).addParameter("id", this.id).executeUpdate();
       this.end_time = end_time;
     }
+  }
+
+  public static long getAverageTime(ArrayList<Long> timesList) {
+    long sum_time = 0L;
+    for (Long time : timesList) {
+      sum_time += time;
+    }
+    long averTime;
+    averTime = sum_time / timesList.size();
+    return averTime;
   }
 }
