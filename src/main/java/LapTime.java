@@ -1,7 +1,7 @@
 import org.sql2o.*;
 import java.util.List;
 
-class LapTime {
+public class LapTime {
   private int id;
   private long start_time;
   private long end_time;
@@ -65,8 +65,12 @@ class LapTime {
     }
   }
 
-  public String getDifferenceAsString() {
-    long deltaT = end_time - start_time;
+  public long getDifference() {
+    long difference = this.end_time - this.start_time;
+    return difference;
+  }
+
+  public String getTimeAsString(long deltaT) {
     long hours = deltaT / MILLIS_PER_HOUR;
     deltaT -= hours * MILLIS_PER_HOUR;
     long minutes = deltaT / MILLIS_PER_MINUTE;
@@ -84,6 +88,21 @@ class LapTime {
     }
   }
 
+  public void saveStartTime() {
+    long start_time = System.currentTimeMillis();
+    try (Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE lap_times SET start_time = :start_time WHERE id = :id";
+      con.createQuery(sql).addParameter("start_time", start_time).addParameter("id", this.id).executeUpdate();
+      this.start_time = start_time;
+    }
+  }
 
-
+  public void saveEndTime() {
+    long end_time = System.currentTimeMillis();
+    try (Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE lap_times SET end_time = :end_time WHERE id = :id";
+      con.createQuery(sql).addParameter("end_time", end_time).addParameter("id", this.id).executeUpdate();
+      this.end_time = end_time;
+    }
+  }
 }

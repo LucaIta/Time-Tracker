@@ -6,6 +6,9 @@ public class Task {
   private int id;
   private String name;
   private long goal_time;
+  private final long MILLIS_PER_HOUR = 3600000L;
+  private final long MILLIS_PER_MINUTE = 60000L;
+  private final long MILLIS_PER_SECOND = 1000L;
   // private long goal_time_secs;//??!~?!?!!?
 
   //not stored in database?
@@ -25,6 +28,10 @@ public class Task {
     return id;
   }
 
+  public long getGoalTime() {
+    return goal_time;
+  }
+
   public static List<Task> all() {
     String sql = "SELECT * FROM tasks;";
     try (Connection con = DB.sql2o.open()) {
@@ -38,7 +45,7 @@ public class Task {
       return false;
     } else {
       Task newTask = (Task) otherTask;
-      return this.getName().equals(newTask.getName()) && this.getId() == newTask.getId();
+      return this.getName().equals(newTask.getName()) && this.getId() == newTask.getId() &&                                 this.getGoalTime() == newTask.getGoalTime();
     }
   }
 
@@ -121,6 +128,27 @@ public class Task {
         .addParameter("task_id", this.getId())
         .executeUpdate();
     }
+
+  public void saveGoal(int hours, int minutes, int seconds) { //need if statements in App.java to check for empty entries!
+    long goal = 0;
+    goal += hours * MILLIS_PER_HOUR;
+    goal += minutes * MILLIS_PER_MINUTE;
+    goal += seconds * MILLIS_PER_SECOND;
+    try (Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE tasks SET goal_time = :goal_time WHERE id = :id";
+      con.createQuery(sql).addParameter("goal_time", goal).addParameter("id", this.id).executeUpdate();
+    }
+  }
+
+  public String getTimeAsString(long deltaT) {
+    long hours = deltaT / MILLIS_PER_HOUR;
+    deltaT -= hours * MILLIS_PER_HOUR;
+    long minutes = deltaT / MILLIS_PER_MINUTE;
+    deltaT -= minutes * MILLIS_PER_MINUTE;
+    long seconds = deltaT / MILLIS_PER_SECOND;
+    deltaT -= seconds * MILLIS_PER_SECOND;
+    long milliseconds = deltaT;
+    return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, milliseconds);
   }
 
 

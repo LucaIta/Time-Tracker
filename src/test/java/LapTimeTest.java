@@ -52,13 +52,28 @@ public class LapTimeTest {
 
 
 
+
 //----already passing, coment out becouse got rid off end_time from constructor, test one more time when we have GET method time_lap----//
+
+// this is the old version
+
   // @Test
   // public void timeFormattedAsString() {
   //   LapTime testLapTime = new LapTime (0L, 603010L);
   //   assertEquals("00:10:03:10", testLapTime.getDifferenceAsString());
   // }
 
+  @Test
+  public void saveStartTime() {
+    LapTime testLapTime = new LapTime(1);
+    Task teskTask = new Task("Do the dishes", 1);
+    testLapTime.addToTask(teskTask);
+    testLapTime.saveStartTime();
+    testLapTime.saveEndTime();
+    LapTime newLapTime = LapTime.find(testLapTime.getId());
+    long difference = newLapTime.getEndTime() - newLapTime.getStartTime();
+    assertTrue(difference < 10);
+  }
 
 
 
