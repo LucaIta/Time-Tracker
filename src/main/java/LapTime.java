@@ -115,4 +115,17 @@ public class LapTime {
     averTime = sum_time / timesList.size();
     return averTime;
   }
+
+  public static long getBestTime(ArrayList<Long> timesList) {
+    long best_time;
+    best_time = timesList.get(0);
+    for (Long time : timesList) {
+      if (time < best_time) {
+        best_time = time;
+      }
+    }
+    return best_time;
+  }
+
+
 }
