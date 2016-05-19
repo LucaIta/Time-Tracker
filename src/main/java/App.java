@@ -19,6 +19,23 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    post("/timer/createRun/:routine_id") {
+      int routineId = Integer.parseInt(request.params("routine_id"));
+      Routine routine = Routine.find(routineId);
+      Run newRun = new Run(routine.getId());
+      newRun.save();
+      String url = String.format("http://localhost:4567/timer/%d", newRun.getId());
+      response.redirect(url);
+      return null;
+    }
+
+    get("/timer/:run_id", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("run", run);
+      model.put("template", "templates/timer.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
     post("/tasks", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       String input_task = request.queryParams("input_task");
