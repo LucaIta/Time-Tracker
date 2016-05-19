@@ -120,26 +120,20 @@ public class Routine {
 
   public void start(int run_id) {
     List<Task> tasks = getTasks();
-    //int lap_id = tasks.get(0).start(run_id);
     int task_id = tasks.get(task_index).getId();
 
-    //TESTING BEGIN
     long time = System.currentTimeMillis();
     try(Connection con = DB.sql2o.open()) {
-      //String sql = "UPDATE lap_times SET start_time = :start_time WHERE id = :task_id";
-      String sql = "INSERT lap_times SET (start_time, task_id, run_id) VALUES (:start_time, :task_id, :run_id) RETURNING id";
-      int lap_id = (int) con.createQuery(sql, true)
+      String sql = "INSERT INTO lap_times (start_time, task_id, run_id) VALUES (:start_time, :task_id, :run_id)";
+      this.lap_id = (int) con.createQuery(sql, true)
         .addParameter("start_time", time)
         .addParameter("task_id", task_id)
         .addParameter("run_id", run_id)
         .executeUpdate()
         .getKey();
-    }
-    //TESTING END
 
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE routines SET lap_id = :lap_id WHERE id = :id";
-      con.createQuery(sql)
+      String sql2 = "UPDATE routines SET lap_id = :lap_id WHERE id = :id";
+      con.createQuery(sql2)
         .addParameter("lap_id", lap_id)
         .addParameter("id", this.getId())
         .executeUpdate();
@@ -147,8 +141,14 @@ public class Routine {
   }
 
   public void end() {
-    List<Task> tasks = getTasks();
-    tasks.get(task_index).end(this.lap_id);      //should this be task_index?  Will that be out of bounds?
+    long time = System.currentTimeMillis();
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE lap_times SET end_time = :end_time WHERE id = :lap_id";
+      con.createQuery(sql)
+        .addParameter("end_time", time)
+        .addParameter("lap_id", this.lap_id)
+        .executeUpdate();
+    }
   }
 
   public void logLap (int runId) {

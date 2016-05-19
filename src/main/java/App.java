@@ -37,6 +37,7 @@ public class App {
       Run run = Run.find(runId);
       Routine routine = Routine.find(run.getRoutineId());
       model.put("run", run);
+      model.put("routine", routine);
       model.put("template", "templates/timer.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
@@ -51,7 +52,7 @@ public class App {
       return null;
     });
 
-    post("/timer/lap/:run_id", (request, response) -> {
+    post("/timer/:run_id/lap", (request, response) -> {
       int runId = Integer.parseInt(request.params("run_id"));
       Run run = Run.find(runId);
       Routine routine = Routine.find(run.getRoutineId());
@@ -62,7 +63,7 @@ public class App {
       return null;
     });
 
-    post("/timer/end/:run_id", (request, response) -> {
+    post("/timer/:run_id/stop", (request, response) -> {
       int runId = Integer.parseInt(request.params("run_id"));
       Run run = Run.find(runId);
       Routine routine = Routine.find(run.getRoutineId());
