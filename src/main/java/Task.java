@@ -108,6 +108,28 @@ public class Task {
     }
   }
 
+  public void start() {
+    long time = System.currentTimeMillis();
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE lap_times SET start_time = :start_time WHERE id = :task_id";
+      con.createQuery(sql)
+        .addParameter("start_time", time)
+        .addParameter("task_id", this.getId())
+        .executeUpdate();
+    }
+  }
+
+  public void end() {
+    long time = System.currentTimeMillis();
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE tasks SET end_time = :end_time WHERE id = :task_id";
+      con.createQuery(sql)
+        .addParameter("end_time", time)
+        .addParameter("task_id", this.getId())
+        .executeUpdate();
+    }
+  }
+
   public void saveGoal(int hours, int minutes, int seconds) { //need if statements in App.java to check for empty entries!
     long goal = 0;
     goal += hours * MILLIS_PER_HOUR;

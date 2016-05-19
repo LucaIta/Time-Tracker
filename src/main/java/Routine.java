@@ -5,9 +5,11 @@ import java.util.ArrayList;
 public class Routine {
   private int id;
   private String name;
+  private int task_index;        //needs to be saved to Database every logLap
 
   public Routine (String name) {
     this.name = name;
+    this.task_index = 0;
   }
 
   public String getName() {
@@ -108,6 +110,35 @@ public class Routine {
         tasks.add(task);
       }
       return tasks;
+    }
+  }
+
+  public void start() {
+    List<Task> tasks = getTasks();
+    tasks.get(0).start();
+  }
+
+  public void end() {
+    List<Task> tasks = getTasks();
+    tasks.get(task_index).end();      //should this be task_index?  Will that be out of bounds?
+  }
+
+  public void logLap (long time) {
+    List<Task> tasks = getTasks();
+
+    tasks.get(task_index).end();
+    task_index++;
+    if (task_index >= tasks.size()) {
+      end();
+    } else {
+      tasks.get(task_index).start();
+    }
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE routines SET task_index = :task_index WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("task_index", this.task_index)
+        .addParameter("id", this.getId())
+        .executeUpdate();
     }
   }
 
