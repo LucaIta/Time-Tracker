@@ -1,6 +1,9 @@
 import org.sql2o.*;
 import org.junit.*;
 import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class LapTimeTest {
 
@@ -39,7 +42,6 @@ public class LapTimeTest {
     assertTrue(testLapTime.equals(LapTime.all().get(0)));
   }
 
-
   @Test
   public void find_findsLapTimessInDatabase_True() {
     LapTime testLapTime = new LapTime(1);
@@ -48,10 +50,6 @@ public class LapTimeTest {
     LapTime savedLapTime = LapTime.find(testLapTime.getId());
     assertTrue(testLapTime.equals(savedLapTime));
   }
-
-
-
-
 
 //----already passing, coment out becouse got rid off end_time from constructor, test one more time when we have GET method time_lap----//
 
@@ -75,6 +73,60 @@ public class LapTimeTest {
     assertTrue(difference < 10);
   }
 
+  @Test
+  public void getAverageTime() {
+    LapTime testLapTime = new LapTime(1000);
+    LapTime testLapTime2 = new LapTime(2000);
+    LapTime testLapTime3 = new LapTime(3000);
+    Task teskTask = new Task("Do the dishes", 1);
+    testLapTime.addToTask(teskTask);
+    testLapTime2.addToTask(teskTask);
+    testLapTime3.addToTask(teskTask);
+    testLapTime.saveEndTime();
+    testLapTime2.saveEndTime();
+    testLapTime3.saveEndTime();
+    ArrayList<LapTime> laptimes = new ArrayList<LapTime>();
+    laptimes.add(testLapTime);
+    laptimes.add(testLapTime2);
+    laptimes.add(testLapTime3);
+    assertTrue(System.currentTimeMillis() > LapTime.getAverageTime(laptimes));
+  }
 
+  @Test
+  public void getBestTimes() {
+    LapTime testLapTime = new LapTime(1000);
+    LapTime testLapTime2 = new LapTime(2000);
+    LapTime testLapTime3 = new LapTime(3000);
+    Task teskTask = new Task("Do the dishes", 1);
+    testLapTime.addToTask(teskTask);
+    testLapTime2.addToTask(teskTask);
+    testLapTime3.addToTask(teskTask);
+    testLapTime.saveEndTime();
+    testLapTime2.saveEndTime();
+    testLapTime3.saveEndTime();
+    ArrayList<LapTime> laptimes = new ArrayList<LapTime>();
+    laptimes.add(testLapTime);
+    laptimes.add(testLapTime2);
+    laptimes.add(testLapTime3);
+    assertTrue(System.currentTimeMillis() > LapTime.getBestTime(laptimes)/3);
+  }
 
+  @Test
+  public void getTotalTime() {
+    LapTime testLapTime = new LapTime(1000);
+    LapTime testLapTime2 = new LapTime(2000);
+    LapTime testLapTime3 = new LapTime(3000);
+    Task teskTask = new Task("Do the dishes", 1);
+    testLapTime.addToTask(teskTask);
+    testLapTime2.addToTask(teskTask);
+    testLapTime3.addToTask(teskTask);
+    testLapTime.saveEndTime();
+    testLapTime2.saveEndTime();
+    testLapTime3.saveEndTime();
+    ArrayList<LapTime> laptimes = new ArrayList<LapTime>();
+    laptimes.add(testLapTime);
+    laptimes.add(testLapTime2);
+    laptimes.add(testLapTime3);
+    assertTrue(System.currentTimeMillis() * 3 > LapTime.getTotalTime(laptimes));
+  }
 }

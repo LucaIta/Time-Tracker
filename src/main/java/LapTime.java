@@ -1,5 +1,6 @@
 import org.sql2o.*;
 import java.util.List;
+import java.util.ArrayList;
 
 public class LapTime {
   private int id;
@@ -12,7 +13,6 @@ public class LapTime {
 
   public LapTime(long start_time){
     this.start_time = start_time;
-    // this.end_time = end_time;
   }
 
   public long getStartTime() {
@@ -31,7 +31,7 @@ public class LapTime {
     return task_id;
   }
 
-  public static List<LapTime> all() { // not tested yet
+  public static List<LapTime> all() {
     try (Connection con = DB.sql2o.open()){
       String sql = "SELECT * FROM lap_times";
       List<LapTime> laptimes = con.createQuery(sql).executeAndFetch(LapTime.class);
@@ -40,7 +40,7 @@ public class LapTime {
   }
 
 
-  public void addToTask(Task task) { // not tested yet
+  public void addToTask(Task task) {
     try (Connection con = DB.sql2o.open()){
       String sql = "INSERT INTO lap_times (start_time,task_id) VALUES (:start_time, :task_id)";
       this.task_id = task.getId();
@@ -103,5 +103,43 @@ public class LapTime {
       con.createQuery(sql).addParameter("end_time", end_time).addParameter("id", this.id).executeUpdate();
       this.end_time = end_time;
     }
+  }
+
+  public static long getAverageTime(List<LapTime> timesList) {
+    long sum_time = 0L;
+    for (LapTime time : timesList) {
+      long userTime = time.getEndTime() - time.getStartTime();
+      sum_time += userTime;
+    }
+    long averTime;
+    averTime = sum_time / timesList.size();
+    return averTime;
+  }
+
+  public static long getBestTime(List<LapTime> lapTimes) {
+
+    ArrayList<Long> timesList = new ArrayList<Long>();
+
+    for(LapTime lapTime : lapTimes) {
+      long userTime = lapTime.getEndTime() - lapTime.getStartTime();
+      timesList.add(userTime);
+    }
+    long best_time;
+    best_time = timesList.get(0);
+    for (Long time : timesList) {
+      if (time < best_time) {
+        best_time = time;
+      }
+    }
+    return best_time;
+  }
+
+  public static long getTotalTime(List<LapTime> timesList) {
+    long total_time = 0L;
+    for (LapTime time : timesList) {
+      long userTime = time.getEndTime() - time.getStartTime();
+      total_time += userTime;
+    }
+    return total_time;
   }
 }
