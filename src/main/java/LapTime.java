@@ -106,17 +106,48 @@ public class LapTime {
     }
   }
 
-  public static long getAverageTime(ArrayList<Long> timesList) {
+    // public List<LapTime> getLapTimes()
+
+  // public static long getAverageTime(ArrayList<Long> timesList) { // this works
+  //   long sum_time = 0L;
+  //   for (Long time : timesList) {
+  //     sum_time += time;
+  //   }
+  //   long averTime;
+  //   averTime = sum_time / timesList.size();
+  //   return averTime;
+  // }
+
+  public static long getAverageTime(List<LapTime> timesList) {
     long sum_time = 0L;
-    for (Long time : timesList) {
-      sum_time += time;
+    for (LapTime time : timesList) {
+      long userTime = time.getEndTime() - time.getStartTime();
+      sum_time += userTime;
     }
     long averTime;
     averTime = sum_time / timesList.size();
     return averTime;
   }
 
-  public static long getBestTime(ArrayList<Long> timesList) {
+  // public static long getBestTime(ArrayList<Long> timesList) {
+  //   long best_time;
+  //   best_time = timesList.get(0);
+  //   for (Long time : timesList) {
+  //     if (time < best_time) {
+  //       best_time = time;
+  //     }
+  //   }
+  //   return best_time;
+  // }
+
+  public static long getBestTime(List<LapTime> lapTimes) {
+
+    ArrayList<Long> timesList = new ArrayList<Long>();
+
+    for(LapTime lapTime : lapTimes) {
+      long userTime = lapTime.getEndTime() - lapTime.getStartTime();
+      timesList.add(userTime);
+    }
     long best_time;
     best_time = timesList.get(0);
     for (Long time : timesList) {
@@ -127,10 +158,19 @@ public class LapTime {
     return best_time;
   }
 
-  public static long getTotalTime(ArrayList<Long> timesList) {
+  // public static long getTotalTime(ArrayList<Long> timesList) {
+  //   long total_time = 0L;
+  //   for (Long time : timesList) {
+  //     total_time += time;
+  //   }
+  //   return total_time;
+  // }
+
+  public static long getTotalTime(List<LapTime> timesList) {
     long total_time = 0L;
-    for (Long time : timesList) {
-      total_time += time;
+    for (LapTime time : timesList) {
+      long userTime = time.getEndTime() - time.getStartTime();
+      total_time += userTime;
     }
     return total_time;
   }

@@ -80,37 +80,59 @@ public class LapTimeTest {
 
   @Test
   public void getAverageTime() {
-    long time1 = 1000L;
-    long time2 = 2000L;
-    long time3 = 3000L;
-    ArrayList<Long> times = new ArrayList<Long>();
-    times.add(time1);
-    times.add(time2);
-    times.add(time3);
-    assertEquals(2000L, LapTime.getAverageTime(times));
+    LapTime testLapTime = new LapTime(1000);
+    LapTime testLapTime2 = new LapTime(2000);
+    LapTime testLapTime3 = new LapTime(3000);
+    Task teskTask = new Task("Do the dishes", 1);
+    testLapTime.addToTask(teskTask);
+    testLapTime2.addToTask(teskTask);
+    testLapTime3.addToTask(teskTask);
+    testLapTime.saveEndTime();
+    testLapTime2.saveEndTime();
+    testLapTime3.saveEndTime();
+    ArrayList<LapTime> laptimes = new ArrayList<LapTime>();
+    laptimes.add(testLapTime);
+    laptimes.add(testLapTime2);
+    laptimes.add(testLapTime3);
+    assertTrue(System.currentTimeMillis() > LapTime.getAverageTime(laptimes));
   }
 
   @Test
   public void getBestTimes() {
-    long time1 = 1000L;
-    long time2 = 2000L;
-    long time3 = 3000L;
-    ArrayList<Long> times = new ArrayList<Long>();
-    times.add(time1);
-    times.add(time2);
-    times.add(time3);
-    assertEquals(1000L, LapTime.getBestTime(times));
+    LapTime testLapTime = new LapTime(1000);
+    LapTime testLapTime2 = new LapTime(2000);
+    LapTime testLapTime3 = new LapTime(3000);
+    Task teskTask = new Task("Do the dishes", 1);
+    testLapTime.addToTask(teskTask);
+    testLapTime2.addToTask(teskTask);
+    testLapTime3.addToTask(teskTask);
+    testLapTime.saveEndTime();
+    testLapTime2.saveEndTime();
+    testLapTime3.saveEndTime();
+    ArrayList<LapTime> laptimes = new ArrayList<LapTime>();
+    laptimes.add(testLapTime);
+    laptimes.add(testLapTime2);
+    laptimes.add(testLapTime3);
+    assertTrue(System.currentTimeMillis() > LapTime.getBestTime(laptimes)/3);
   }
 
   @Test
   public void getTotalTime() {
-    long time1 = 1000L;
-    long time2 = 2000L;
-    long time3 = 3000L;
-    ArrayList<Long> times = new ArrayList<Long>();
-    times.add(time1);
-    times.add(time2);
-    times.add(time3);
-    assertEquals(6000L, LapTime.getTotalTime(times));
+    LapTime testLapTime = new LapTime(1000);
+    LapTime testLapTime2 = new LapTime(2000);
+    LapTime testLapTime3 = new LapTime(3000);
+    Task teskTask = new Task("Do the dishes", 1);
+    testLapTime.addToTask(teskTask);
+    testLapTime2.addToTask(teskTask);
+    testLapTime3.addToTask(teskTask);
+    testLapTime.saveEndTime();
+    testLapTime2.saveEndTime();
+    testLapTime3.saveEndTime();
+    ArrayList<LapTime> laptimes = new ArrayList<LapTime>();
+    laptimes.add(testLapTime);
+    laptimes.add(testLapTime2);
+    laptimes.add(testLapTime3);
+    assertTrue(System.currentTimeMillis() * 3 > LapTime.getTotalTime(laptimes));
   }
+
 }

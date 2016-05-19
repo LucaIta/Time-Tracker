@@ -33,7 +33,7 @@ public class Task {
   }
 
   public static List<Task> all() {
-    String sql = "SELECT * FROM tasks;";
+    String sql = "SELECT * FROM tasks ORDER BY name;";
     try (Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Task.class);
     }

@@ -6,7 +6,6 @@ import static spark.Spark.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class App {
   public static void main(String[] args) {
     staticFileLocation("/public");
@@ -56,14 +55,21 @@ public class App {
       return null;
     });
 
-    get("/timerDisplayer", (request, response) -> {  // this is just a test
+    get("/timerDisplayer", (request, response) -> {  // this is just a test, should change the path
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("tasks", Task.all());
       model.put("testLapTime", Task.all().get(0).getLapTimes().get(0));
-      System.out.println(Task.all().get(0).getLapTimes().get(0).getId());
-
       // probably later they will be only the tasks of this routine
       model.put("template", "templates/timer_board.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/routineDisplayer", (request, response) -> {  // this is just a test, should change the path
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("tasks", Task.all()); // they should be only the task related to the routine
+      LapTime lapTime = new LapTime(1);
+      model.put("LapTime", LapTime.class);
+      model.put("template", "templates/routine.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
@@ -106,6 +112,8 @@ public class App {
       response.redirect("/routines");
       return null;
     });
+
+
 
   }
 }
