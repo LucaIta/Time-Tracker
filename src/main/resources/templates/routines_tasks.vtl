@@ -1,0 +1,41 @@
+<h1>Add Tasks to Routines</h1>
+<a href="/" class="btn btn-default">Home</a>
+<hr>
+
+<div class="row">
+  <div class="col-sm-5">
+    <form action="/routines_tasks" method="post" class="form-group">
+
+      <h3><label for="select_routine">Select a Routine</label></h3>
+      <select id="select_routine" name="select_routine" type="text" class="form-control" required>
+        <option value="">select a routine</option>
+        #foreach($routine in $allRoutines)
+          <option value="$routine.getId()">$routine.getName()</option>
+        #end
+      </select>
+
+      <h3><label for="select_task">Select Tasks</label></h3>
+      #foreach($task in $allTasks)
+        <input type="checkbox" class="task_id" name="task_id" value="$task.getId()"> $task.getName()<br>
+      #end
+
+      <br>
+      <button id="add_relation" type="submit" class="btn btn-info">Add Tasks to Selected Routine</button>
+    </form>
+  </div>
+
+  <div class="col-sm-6 col-sm-offset-1">
+    <h3>View Relationships</h3>
+    #foreach ($routine in $allRoutines)
+      #if ($routine.getTasks().size() != 0)
+        <h4>$routine.getName()</h4>
+        <ul>
+          #foreach($task in $routine.getTasks())
+            <li>$task.getName()</li>
+          #end
+        </ul>
+      #end
+    #end
+  </div>
+
+</div>
