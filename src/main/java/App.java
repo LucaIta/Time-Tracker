@@ -19,7 +19,8 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    post("/timer/createRun/:routine_id") {
+    //Noah's routes for the timer
+    post("/timer/createRun/:routine_id", (request, response) -> {
       int routineId = Integer.parseInt(request.params("routine_id"));
       Routine routine = Routine.find(routineId);
       Run newRun = new Run(routine.getId());
@@ -27,14 +28,47 @@ public class App {
       String url = String.format("http://localhost:4567/timer/%d", newRun.getId());
       response.redirect(url);
       return null;
-    }
+    });
 
     get("/timer/:run_id", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      model.put("run", run);
+      int runId = Integer.parseInt(request.params("run_id"));
+      model.put("run", Run.find(runId));
       model.put("template", "templates/timer.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    post("/timer/start/:run_id", (request, response) -> {
+      int runId = Integer.parseInt(request.params("run_id"));
+      Run run = Run.find(runId);
+      Routine routine = Routine.find(run.getRoutineId());
+      routine.start();
+      String url = String.format("http://localhost:4567/timer/%d", runId);
+      response.redirect(url);
+      return null;
+    });
+
+    post("/timer/logLap/:run_id", (request, response) -> {
+      int runId = Integer.parseInt(request.params("run_id"));
+      Run run = Run.find(runId);
+      Routine routine = Routine.find(run.getRoutineId());
+      long time = System.currentTimeMillis();
+      routine.logLap(time);
+      String url = String.format("http://localhost:4567/timer/%d", runId);
+      response.redirect(url);
+      return null;
+    });
+
+    post("/timer/end/:run_id", (request, response) -> {
+      int runId = Integer.parseInt(request.params("run_id"));
+      Run run = Run.find(runId);
+      Routine routine = Routine.find(run.getRoutineId());
+      routine.end();
+      String url = String.format("http://localhost:4567/timer/%d", runId);
+      response.redirect(url);
+      return null;
+    });
+    //end Noah's routes
 
     post("/tasks", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();

@@ -120,7 +120,7 @@ public class Routine {
 
   public void end() {
     List<Task> tasks = getTasks();
-    tasks.get(0).end();
+    tasks.get(task_index).end();      //should this be task_index?  Will that be out of bounds?
   }
 
   public void logLap (long time) {
