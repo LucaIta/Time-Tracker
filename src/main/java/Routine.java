@@ -19,7 +19,7 @@ public class Routine {
   }
 
   public static List<Routine> all() {
-    String sql = "SELECT * FROM routines;";
+    String sql = "SELECT * FROM routines ORDER BY name";
     try (Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Routine.class);
     }
