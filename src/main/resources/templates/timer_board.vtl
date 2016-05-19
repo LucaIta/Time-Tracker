@@ -12,20 +12,19 @@
     #foreach ($task in $tasks)
       <tr>
         <td>$task.getName()</td>
-
         <td>$task.getTimeAsString($task.getGoalTime())</td>
-
+      #if ($task.getLapTimes().size() == 0)
+        <td></td>
+        <td></td>
+        #else
         #foreach ($laptime in $task.getLapTimes())
-          #if ($laptime.getTaskId() == $task.getId())
-            <td>$laptime.getTimeAsString($laptime.getEndTime())</td>
-            <td>$laptime.getTimeAsString($laptime.getDifference())</td>
-          #else
-          something broke
-          #end
+          <td>$laptime.getTimeAsString($laptime.getEndTime())</td>
+          <td>$laptime.getTimeAsString($laptime.getDifference())</td>
         #end
+      #end
       </tr>
     #end
-</table>
+  </table>
 </div>
 
 <hr>
