@@ -11,10 +11,18 @@ public class LapTime {
   private final long MILLIS_PER_MINUTE = 60000L;
   private final long MILLIS_PER_SECOND = 1000L;
 
-  public LapTime(long start_time){
-    this.start_time = start_time;
+  public LapTime(int run_id, int task_id) {
+    //this.start_time = start_time;
+    this.run_id = run_id;
+    this.task_id = task_id;
     // this.end_time = end_time;
   }
+
+  // public LapTime (long start_time, int run_id, int task_id) {
+  //   this.start_time = start_time;
+  //   this.run_id = run_id;
+  //   this.task_id = task_id;
+  // }
 
   public long getStartTime() {
     return start_time;
@@ -32,6 +40,10 @@ public class LapTime {
     return task_id;
   }
 
+  public int getRunId () {
+    return run_id;
+  }
+
   public static List<LapTime> all() { // not tested yet
     try (Connection con = DB.sql2o.open()){
       String sql = "SELECT * FROM lap_times";
@@ -40,17 +52,31 @@ public class LapTime {
     }
   }
 
-
-  public void addToTask(Task task) { // not tested yet
-    try (Connection con = DB.sql2o.open()){
-      String sql = "INSERT INTO lap_times (start_time,task_id) VALUES (:start_time, :task_id)";
-      this.task_id = task.getId();
+  public void save() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO lap_times(start_time, end_time, task_id, run_id) VALUES (:start_time, :end_time, :task_id, :run_id)";
       this.id = (int) con.createQuery(sql, true)
-                          .addParameter("task_id", this.task_id)
-                          .addParameter("start_time", this.start_time)
-                          .executeUpdate().getKey();
+        .addParameter("start_time", this.start_time)
+        .addParameter("end_time", this.end_time)
+        .addParameter("task_id", this.task_id)
+        .addParameter("run_id", this.run_id)
+        .executeUpdate()
+        .getKey();
     }
   }
+
+  //  Laptime - Task connection changed
+  // public void addToTask(Task task) { // not tested yet
+  //   try (Connection con = DB.sql2o.open()){
+  //     //String sql = "INSERT INTO lap_times (start_time, task_id) VALUES (:start_time, :task_id)";
+  //     String sql = "UPDATE lap_times SET task_id = :task_id WHERE id = :id";
+  //     this.task_id = task.getId();
+  //     this.id = (int) con.createQuery(sql, true)
+  //                         .addParameter("task_id", task.getId())
+  //                         .addParameter("id", this.id)
+  //                         .executeUpdate().getKey();
+  //   }
+  // }
 
   @Override
   public boolean equals(Object otherLapTime){
@@ -61,7 +87,8 @@ public class LapTime {
     return this.id == laptime.getId()&&
            this.start_time == laptime.getStartTime()&&
            this.end_time == laptime.getEndTime()&&
-           this.task_id == laptime.getTaskId();
+           this.task_id == laptime.getTaskId() &&
+           this.run_id == laptime.getRunId();
     }
   }
 
