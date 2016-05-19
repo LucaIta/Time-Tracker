@@ -136,5 +136,65 @@ public class App {
       }
     }, new VelocityTemplateEngine());
 
+// Routine section --------------------
+    get("/tasks/update_delete", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("tasks", Task.all());
+      model.put("template", "templates/tasks.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/tasks/delete", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      String delete_task = request.queryParams("delete_task");
+      if (!(delete_task.equals(""))) {
+        Task task = Task.find(Integer.parseInt(delete_task));
+        task.delete();
+      }
+      response.redirect("/tasks/update_delete");
+      return null;
+    });
+
+    post("/tasks/update", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      String select_task = request.queryParams("select_task");
+      Task task = Task.find(Integer.parseInt(select_task));
+
+      if (!(select_task.equals(""))) {
+        String new_name = request.queryParams("update_name");
+        String hour = request.queryParams("input_hh");
+        String minute = request.queryParams("input_mm");
+        String second = request.queryParams("input_ss");
+        int number_hh;
+        int number_mm;
+        int number_ss;
+
+        if (hour.equals("")) {
+          number_hh = 0;
+        } else {
+          number_hh = Integer.parseInt(hour);
+        }
+
+        if (minute.equals("")) {
+          number_mm = 0;
+        } else {
+          number_mm = Integer.parseInt(minute);
+        }
+
+        if (second.equals("")) {
+          number_ss = 0;
+        } else {
+          number_ss = Integer.parseInt(second);
+        }
+
+        long new_goal = number_hh + number_mm + number_ss; // This line need to change with Millisecond convertion method
+
+        task.update(new_name, new_goal);
+      }
+
+      response.redirect("/tasks/update_delete");
+      return null;
+    });
+
   }
 }

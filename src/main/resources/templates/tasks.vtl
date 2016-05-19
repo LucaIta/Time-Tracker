@@ -1,0 +1,67 @@
+<h1>Update / Delete Tasks</h1>
+<hr>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="row">
+      <form action="/tasks/delete" method="post" class="form-group">
+        <h3><label for="delete_task">Select a task to DELETE</label></h3>
+        <select id="delete_task" name="delete_task" type="text" class="form-control">
+          <option value="">select here</option>
+          #foreach($task in $tasks)
+            <option value="$task.getId()">$task.getName()</option>
+          #end
+        </select>
+        <br>
+        <button id="delete_task_button" type="submit" class="btn btn-danger">Delete</button>
+      </form>
+    </div>
+    <hr>
+
+    <div class="row">
+      <form action="/tasks/update" method="post">
+        <h3><label for="select_task">Select a task to UPDATE</label></h3>
+        <select id="select_task" name="select_task" type="text" class="form-control" required>
+          <option value="">select here</option>
+          #foreach($task in $tasks)
+            <option value="$task.getId()">$task.getName()</option>
+          #end
+        </select>
+        <br>
+
+        <h4>New Task Name</h4>
+        <input type="text" id="update_name" name="update_name" class="form-control" placeholder="fill update task name here">
+        <br>
+
+        <h4>New Goal time</h4>
+        <div class="row">
+          <div class="col-sm-4">
+            <label for="input_hh">Hour</label>
+            <input type="text" id="input_hh" name="input_hh" class="form-control" value="">
+          </div>
+          <div class="col-sm-4">
+            <label for="input_mm">Minute</label>
+            <input type="text" id="input_mm" name="input_mm" class="form-control" value="">
+          </div>
+          <div class="col-sm-4">
+            <label for="input_ss">Second</label>
+            <input type="text" id="input_ss" name="input_ss" class="form-control" value="">
+          </div>
+        </div>
+        <br>
+        <button id="update_task_button" type="submit" class="btn btn-primary">Update</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-sm-5 col-sm-offset-1">
+    #if ($tasks.size() != 0)
+      <h3>List of all tasks</h3>
+      <ul>
+        #foreach ($task in $tasks)
+          <li>$task.getName()</li>
+        #end
+      </ul>
+    #end
+  </div>
+</div>

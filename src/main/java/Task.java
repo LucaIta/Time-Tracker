@@ -97,6 +97,11 @@ public class Task {
         con.createQuery(sql)
           .addParameter("id", this.getId())
           .executeUpdate();
+
+      String joinDeleteQuery = "DELETE FROM routines_tasks WHERE task_id = :task_id";
+        con.createQuery(joinDeleteQuery)
+          .addParameter("task_id", this.getId())
+          .executeUpdate();
     }
   }
 

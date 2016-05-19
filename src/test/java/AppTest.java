@@ -34,8 +34,6 @@ public class AppTest extends FluentTest {
   public void taskIsCreateAndDisplayedTest() {
     goTo("http://localhost:4567/");
     fill("#input_task").with("Jumping jack 50 times");
-    fill("#input_hh").with("0");
-    fill("#input_mm").with("0");
     fill("#input_ss").with("60");
     submit("#input_goal_button");
     assertThat(pageSource()).contains("Jumping jack 50 times");
@@ -83,6 +81,29 @@ public class AppTest extends FluentTest {
     find(".task_id").first().click(); // checkbox for tasks
     submit("#add_relation");
     assertThat(pageSource()).contains("Routine Number 1");
+  }
+
+// Routine section --------------------
+  @Test
+  public void taskIsDeletedTest() {
+    Task testTask = new Task("Running", 100000);
+    testTask.save();
+    goTo("http://localhost:4567/tasks/update_delete");
+    click("option", withText("Running"));
+    submit("#delete_task_button");
+    assertThat(pageSource()).doesNotContain("Running");
+  }
+
+  @Test
+  public void taskIsUpdatedTest() {
+    Task testTask = new Task("Running", 100000);
+    testTask.save();
+    goTo("http://localhost:4567/tasks/update_delete");
+    click("option", withText("Running"));
+    fill("#update_name").with("Marathon");
+    fill("#input_ss").with("60");
+    submit("#update_task_button");
+    assertThat(pageSource()).contains("Marathon");
   }
 
 }
