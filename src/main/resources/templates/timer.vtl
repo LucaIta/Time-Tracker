@@ -9,7 +9,6 @@
       <th>Your Time</th>
       <th>Time Difference</th>
     </tr>
-    <p>$routine.getTasks().size()</p>
     #foreach ($task in $routine.getTasks())
       <tr>
         <td>$task.getName()</td>
@@ -17,12 +16,13 @@
         <td>$task.getTimeAsString($task.getGoalTime())</td>
 
         #foreach ($laptime in $task.getLapTimes())
-          #if ($laptime.getTaskId() == $task.getId())
+        <p>$laptime.getRunId()</p>
+        <p>$run.getId()</p>
+          #if ($laptime.getRunId() == $run.getId())
             <td>$laptime.getTimeAsString($laptime.getEndTime())</td>
             <td>$laptime.getTimeAsString($laptime.getDifference())</td>
-          #else
-          something broke
-          #end
+            #else
+            #end
         #end
       </tr>
     #end

@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class Routine {
   private int id;
   private String name;
-  private int task_index;        //needs to be saved to Database every logLap
-  private int lap_id;            //oh wow do I really need this?
+  //private int lap_id;            //oh wow do I really need this?
+  //task_index
 
   public Routine (String name) {
     this.name = name;
-    this.task_index = 0;
+    //this.task_index = 0;
   }
 
   public String getName() {
@@ -118,56 +118,56 @@ public class Routine {
     }
   }
 
-  public void start(int run_id) {
-    List<Task> tasks = getTasks();
-    int task_id = tasks.get(task_index).getId();
+  // public void start(int run_id, int task_index) {
+  //   List<Task> tasks = getTasks();
+  //   int task_id = tasks.get(task_index).getId();
+  //
+  //   long time = System.currentTimeMillis();
+  //   try(Connection con = DB.sql2o.open()) {
+  //     String sql = "INSERT INTO lap_times (start_time, task_id, run_id) VALUES (:start_time, :task_id, :run_id)";
+  //     this.lap_id = (int) con.createQuery(sql, true)
+  //       .addParameter("start_time", time)
+  //       .addParameter("task_id", task_id)
+  //       .addParameter("run_id", run_id)
+  //       .executeUpdate()
+  //       .getKey();
+  //
+  //     String sql2 = "UPDATE routines SET lap_id = :lap_id WHERE id = :id";
+  //     con.createQuery(sql2)
+  //       .addParameter("lap_id", lap_id)
+  //       .addParameter("id", this.getId())
+  //       .executeUpdate();
+  //   }
+  // }
 
-    long time = System.currentTimeMillis();
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO lap_times (start_time, task_id, run_id) VALUES (:start_time, :task_id, :run_id)";
-      this.lap_id = (int) con.createQuery(sql, true)
-        .addParameter("start_time", time)
-        .addParameter("task_id", task_id)
-        .addParameter("run_id", run_id)
-        .executeUpdate()
-        .getKey();
-
-      String sql2 = "UPDATE routines SET lap_id = :lap_id WHERE id = :id";
-      con.createQuery(sql2)
-        .addParameter("lap_id", lap_id)
-        .addParameter("id", this.getId())
-        .executeUpdate();
-    }
-  }
-
-  public void end() {
-    long time = System.currentTimeMillis();
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE lap_times SET end_time = :end_time WHERE id = :lap_id";
-      con.createQuery(sql)
-        .addParameter("end_time", time)
-        .addParameter("lap_id", this.lap_id)
-        .executeUpdate();
-    }
-  }
-
-  public void logLap (int runId) {
-    List<Task> tasks = getTasks();
-
-    tasks.get(task_index).end(this.lap_id);
-    task_index++;
-    if (task_index >= tasks.size()) {
-      end();
-    } else {
-      tasks.get(task_index).start(runId);
-    }
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE routines SET task_index = :task_index WHERE id = :id";
-      con.createQuery(sql)
-        .addParameter("task_index", this.task_index)
-        .addParameter("id", this.getId())
-        .executeUpdate();
-    }
-  }
+  // public void end() {
+  //   long time = System.currentTimeMillis();
+  //   try(Connection con = DB.sql2o.open()) {
+  //     String sql = "UPDATE lap_times SET end_time = :end_time WHERE id = :lap_id";
+  //     con.createQuery(sql)
+  //       .addParameter("end_time", time)
+  //       .addParameter("lap_id", this.lap_id)
+  //       .executeUpdate();
+  //   }
+  // }
+  //
+  // public void logLap (int runId, int task_index) {
+  //   List<Task> tasks = getTasks();
+  //
+  //   tasks.get(task_index).end(this.lap_id);
+  //   task_index++;
+  //   if (task_index >= tasks.size()) {
+  //     end();
+  //   } else {
+  //     tasks.get(task_index).start(runId);
+  //   }
+  //   try(Connection con = DB.sql2o.open()) {
+  //     String sql = "UPDATE routines SET task_index = :task_index WHERE id = :id";
+  //     con.createQuery(sql)
+  //       //.addParameter("task_index", this.task_index)
+  //       .addParameter("id", this.getId())
+  //       .executeUpdate();
+  //   }
+  // }
 
 }

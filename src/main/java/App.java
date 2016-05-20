@@ -45,8 +45,8 @@ public class App {
     post("/timer/:run_id/start", (request, response) -> {
       int runId = Integer.parseInt(request.params("run_id"));
       Run run = Run.find(runId);
-      Routine routine = Routine.find(run.getRoutineId());
-      routine.start(runId);
+      //Routine routine = Routine.find(run.getRoutineId());
+      run.start();
       String url = String.format("http://localhost:4567/timer/%d", runId);
       response.redirect(url);
       return null;
@@ -55,9 +55,9 @@ public class App {
     post("/timer/:run_id/lap", (request, response) -> {
       int runId = Integer.parseInt(request.params("run_id"));
       Run run = Run.find(runId);
-      Routine routine = Routine.find(run.getRoutineId());
-      long time = System.currentTimeMillis();
-      routine.logLap(runId);
+      //Routine routine = Routine.find(run.getRoutineId());
+      //long time = System.currentTimeMillis();
+      run.logLap();
       String url = String.format("http://localhost:4567/timer/%d", runId);
       response.redirect(url);
       return null;
@@ -66,8 +66,8 @@ public class App {
     post("/timer/:run_id/stop", (request, response) -> {
       int runId = Integer.parseInt(request.params("run_id"));
       Run run = Run.find(runId);
-      Routine routine = Routine.find(run.getRoutineId());
-      routine.end();
+      //Routine routine = Routine.find(run.getRoutineId());
+      run.end();
       String url = String.format("http://localhost:4567/timer/%d", runId);
       response.redirect(url);
       return null;

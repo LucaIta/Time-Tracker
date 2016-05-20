@@ -5,6 +5,8 @@ import java.util.List;
 public class Run {
   private int routine_id;
   private int id;
+  private int task_index;        //needs to be saved to Database every logLap
+  private int lap_id;            //oh wow do I really need this?
 
   public Run (int routine) {
     this.routine_id = routine;
@@ -17,7 +19,11 @@ public class Run {
   public int getRoutineId() {
     return routine_id;
   }
-  
+
+  public int getTaskIndex() {
+    return task_index;
+  }
+
   public static List<Run> all() {
     String sql = "SELECT * FROM runs;";
     try (Connection con = DB.sql2o.open()) {
@@ -37,9 +43,10 @@ public class Run {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO runs(routine_id) VALUES (:routine_id)";
+      String sql = "INSERT INTO runs(routine_id, task_index) VALUES (:routine_id, :task_index)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("routine_id", this.getRoutineId())
+        .addParameter("task_index", this.getTaskIndex())
         .executeUpdate()
         .getKey();
     }
@@ -52,6 +59,67 @@ public class Run {
         .addParameter("id", id)
         .executeAndFetchFirst(Run.class);
       return task;
+    }
+  }
+
+  //MODIFY THESE//
+
+  public void start() {
+    Routine routine = Routine.find(routine_id);
+    List<Task> tasks = routine.getTasks();
+    int task_id = tasks.get(this.task_index).getId();
+
+    //CREATE NEW LAPTIME IN DATABASE//
+    long time = System.currentTimeMillis();
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO lap_times (start_time, task_id, run_id) VALUES (:start_time, :task_id, :run_id)";
+      this.lap_id = (int) con.createQuery(sql, true)
+        .addParameter("start_time", time)
+        .addParameter("task_id", task_id)
+        .addParameter("run_id", this.id)
+        .executeUpdate()
+        .getKey();
+
+      //REMEMBER WHICH LAP WE ARE ON IN DATABASE//
+      String sql2 = "UPDATE runs SET lap_id = :lap_id WHERE id = :id";
+      con.createQuery(sql2)
+        .addParameter("lap_id", lap_id)
+        .addParameter("id", this.getId())
+        .executeUpdate();
+    }
+  }
+
+  public void end() {
+    long time = System.currentTimeMillis();
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE lap_times SET end_time = :end_time WHERE id = :lap_id";
+      con.createQuery(sql)
+        .addParameter("end_time", time)
+        .addParameter("lap_id", this.lap_id)
+        .executeUpdate();
+    }
+  }
+
+  public void logLap () {
+    Routine routine = Routine.find(routine_id);
+    List<Task> tasks = routine.getTasks();
+    //int task_id = tasks.get(this.task_index).getId();
+    end();
+    //tasks.get(task_index).end();
+    task_index++;
+    if (task_index < tasks.size()) {
+      start();
+    } else {
+      //only exists to prevent out of bounds errors -- fix later//
+      task_index--;
+    }
+    //UPDATE RUN IN DATABASE TO REMEMBER NEW CURRENT TASK//
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE runs SET task_index = :task_index WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("task_index", this.task_index)
+        .addParameter("id", this.getId())
+        .executeUpdate();
     }
   }
 
