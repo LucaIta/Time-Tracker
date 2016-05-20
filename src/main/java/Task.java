@@ -9,11 +9,6 @@ public class Task {
   private final long MILLIS_PER_HOUR = 3600000L;
   private final long MILLIS_PER_MINUTE = 60000L;
   private final long MILLIS_PER_SECOND = 1000L;
-  // private long goal_time_secs;//??!~?!?!!?
-
-  //not stored in database?
-  // private LocalTime starting_time;
-  // private LocalTime end_time;
 
   public Task (String name, long goal_time) {
     this.name = name;
@@ -112,7 +107,6 @@ public class Task {
   public int start(int run_id) {
     long time = System.currentTimeMillis();
     try(Connection con = DB.sql2o.open()) {
-      //String sql = "UPDATE lap_times SET start_time = :start_time WHERE id = :task_id";
       String sql = "INSERT lap_times SET (start_time, task_id, run_id) VALUES (:start_time, :task_id, :run_id) RETURNING id";
       int id = (int) con.createQuery(sql, true)
         .addParameter("start_time", time)
@@ -154,7 +148,7 @@ public class Task {
     long seconds = deltaT / MILLIS_PER_SECOND;
     deltaT -= seconds * MILLIS_PER_SECOND;
     long milliseconds = deltaT;
-    return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, milliseconds);
+    return String.format("%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
   }
 
 

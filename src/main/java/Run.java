@@ -5,8 +5,8 @@ import java.util.List;
 public class Run {
   private int routine_id;
   private int id;
-  private int task_index;        //needs to be saved to Database every logLap
-  private int lap_id;            //oh wow do I really need this?
+  private int task_index;      
+  private int lap_id;
 
   public Run (int routine) {
     this.routine_id = routine;
@@ -62,8 +62,6 @@ public class Run {
     }
   }
 
-  //MODIFY THESE//
-
   public void start() {
     Routine routine = Routine.find(routine_id);
     List<Task> tasks = routine.getTasks();
@@ -103,14 +101,11 @@ public class Run {
   public void logLap () {
     Routine routine = Routine.find(routine_id);
     List<Task> tasks = routine.getTasks();
-    //int task_id = tasks.get(this.task_index).getId();
     end();
-    //tasks.get(task_index).end();
     task_index++;
     if (task_index < tasks.size()) {
       start();
     } else {
-      //only exists to prevent out of bounds errors -- fix later//
       task_index--;
     }
     //UPDATE RUN IN DATABASE TO REMEMBER NEW CURRENT TASK//

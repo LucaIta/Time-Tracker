@@ -45,7 +45,6 @@ public class App {
     post("/timer/:run_id/start", (request, response) -> {
       int runId = Integer.parseInt(request.params("run_id"));
       Run run = Run.find(runId);
-      //Routine routine = Routine.find(run.getRoutineId());
       run.start();
       String url = String.format("http://localhost:4567/timer/%d", runId);
       response.redirect(url);
@@ -55,8 +54,6 @@ public class App {
     post("/timer/:run_id/lap", (request, response) -> {
       int runId = Integer.parseInt(request.params("run_id"));
       Run run = Run.find(runId);
-      //Routine routine = Routine.find(run.getRoutineId());
-      //long time = System.currentTimeMillis();
       run.logLap();
       String url = String.format("http://localhost:4567/timer/%d", runId);
       response.redirect(url);
@@ -66,7 +63,6 @@ public class App {
     post("/timer/:run_id/stop", (request, response) -> {
       int runId = Integer.parseInt(request.params("run_id"));
       Run run = Run.find(runId);
-      //Routine routine = Routine.find(run.getRoutineId());
       run.end();
       String url = String.format("http://localhost:4567/timer/%d", runId);
       response.redirect(url);
@@ -102,8 +98,7 @@ public class App {
         number_ss = Integer.parseInt(second);
       }
 
-      long goal = number_hh + number_mm + number_ss; // This line need to change with Millisecond convertion method
-
+      long goal = number_hh * 3600000L + number_mm  * 60000L + number_ss * 1000L;
       Task newTask = new Task(input_task, goal);
       newTask.save();
 
@@ -129,18 +124,6 @@ public class App {
       model.put("template", "templates/routines.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
-
-    //I don't think this is ever used.  Log Lap functionality moved to timer pages
-    // post("routines/:id/lap", (request, response) -> {
-    //   int routineId = Integer.parseInt(request.params("id"));
-    //   Routine routine = Routine.find(routineId);
-    //   long time = System.currentTimeMillis();
-    //   routine.logLap(time);
-    //
-    //   String url = String.format("http://localhost:4567/routines/%d", routineId);
-    //   response.redirect(url);
-    //   return null;
-    // });
 
     get("/routines/:id", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();

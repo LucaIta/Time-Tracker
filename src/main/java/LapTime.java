@@ -12,17 +12,9 @@ public class LapTime {
   private final long MILLIS_PER_SECOND = 1000L;
 
   public LapTime(int run_id, int task_id) {
-    //this.start_time = start_time;
     this.run_id = run_id;
     this.task_id = task_id;
-    // this.end_time = end_time;
   }
-
-  // public LapTime (long start_time, int run_id, int task_id) {
-  //   this.start_time = start_time;
-  //   this.run_id = run_id;
-  //   this.task_id = task_id;
-  // }
 
   public long getStartTime() {
     return start_time;
@@ -65,19 +57,6 @@ public class LapTime {
     }
   }
 
-  //  Laptime - Task connection changed
-  // public void addToTask(Task task) { // not tested yet
-  //   try (Connection con = DB.sql2o.open()){
-  //     //String sql = "INSERT INTO lap_times (start_time, task_id) VALUES (:start_time, :task_id)";
-  //     String sql = "UPDATE lap_times SET task_id = :task_id WHERE id = :id";
-  //     this.task_id = task.getId();
-  //     this.id = (int) con.createQuery(sql, true)
-  //                         .addParameter("task_id", task.getId())
-  //                         .addParameter("id", this.id)
-  //                         .executeUpdate().getKey();
-  //   }
-  // }
-
   @Override
   public boolean equals(Object otherLapTime){
     if(!(otherLapTime instanceof LapTime)) {
@@ -92,9 +71,13 @@ public class LapTime {
     }
   }
 
-  public long getDifference() {
-    long difference = this.end_time - this.start_time;
-    return difference;
+  public long getCompletionTime() {
+    return this.end_time - this.start_time;
+  }
+
+  public long getOffsetFromGoal(long goal_time) {
+    long actualTime = getCompletionTime();
+    return actualTime - goal_time;
   }
 
   public String getTimeAsString(long deltaT) {
