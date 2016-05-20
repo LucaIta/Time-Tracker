@@ -7,12 +7,16 @@ public class LapTime {
   private long start_time;
   private long end_time;
   private int task_id;
+  private int run_id;     //this is just a test
   private final long MILLIS_PER_HOUR = 3600000L;
   private final long MILLIS_PER_MINUTE = 60000L;
   private final long MILLIS_PER_SECOND = 1000L;
 
-  public LapTime(long start_time){
-    this.start_time = start_time;
+
+  public LapTime(int run_id, int task_id) {
+    this.run_id = run_id;
+    this.task_id = task_id;
+
   }
 
   public long getStartTime() {
@@ -31,6 +35,10 @@ public class LapTime {
     return task_id;
   }
 
+  public int getRunId () {
+    return run_id;
+  }
+
   public static List<LapTime> all() {
     try (Connection con = DB.sql2o.open()){
       String sql = "SELECT * FROM lap_times";
@@ -39,15 +47,21 @@ public class LapTime {
     }
   }
 
-
-  public void addToTask(Task task) {
-    try (Connection con = DB.sql2o.open()){
-      String sql = "INSERT INTO lap_times (start_time,task_id) VALUES (:start_time, :task_id)";
-      this.task_id = task.getId();
+  //COMMENT THIS BACK IN IF THINGS DON'T WORK
+  // public void addToTask(Task task) {
+  //   try (Connection con = DB.sql2o.open()){
+  //     String sql = "INSERT INTO lap_times (start_time,task_id) VALUES (:start_time, :task_id)";
+  //     this.task_id = task.getId();
+  public void save() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO lap_times(start_time, end_time, task_id, run_id) VALUES (:start_time, :end_time, :task_id, :run_id)";
       this.id = (int) con.createQuery(sql, true)
-                          .addParameter("task_id", this.task_id)
-                          .addParameter("start_time", this.start_time)
-                          .executeUpdate().getKey();
+        .addParameter("start_time", this.start_time)
+        .addParameter("end_time", this.end_time)
+        .addParameter("task_id", this.task_id)
+        .addParameter("run_id", this.run_id)
+        .executeUpdate()
+        .getKey();
     }
   }
 
@@ -60,16 +74,27 @@ public class LapTime {
     return this.id == laptime.getId()&&
            this.start_time == laptime.getStartTime()&&
            this.end_time == laptime.getEndTime()&&
-           this.task_id == laptime.getTaskId();
+           this.task_id == laptime.getTaskId() &&
+           this.run_id == laptime.getRunId();
     }
   }
 
-  public long getDifference() {
-    long difference = this.end_time - this.start_time;
-    return difference;
+  public long getCompletionTime() {
+    return this.end_time - this.start_time;
+  }
+
+  public long getOffsetFromGoal(long goal_time) {
+    long actualTime = getCompletionTime();
+    return actualTime - goal_time;
   }
 
   public String getTimeAsString(long deltaT) {
+    boolean negative = false;
+    if (deltaT < 0) {
+      deltaT *= -1;
+      negative = true;
+    }
+
     long hours = deltaT / MILLIS_PER_HOUR;
     deltaT -= hours * MILLIS_PER_HOUR;
     long minutes = deltaT / MILLIS_PER_MINUTE;
@@ -77,7 +102,11 @@ public class LapTime {
     long seconds = deltaT / MILLIS_PER_SECOND;
     deltaT -= seconds * MILLIS_PER_SECOND;
     long milliseconds = deltaT;
-    return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, milliseconds);
+    if (negative) {
+      return String.format("-%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
+    } else {
+      return String.format("+%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
+    }
   }
 
   public static LapTime find(int id) {

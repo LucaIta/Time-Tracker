@@ -9,11 +9,6 @@ public class Task {
   private final long MILLIS_PER_HOUR = 3600000L;
   private final long MILLIS_PER_MINUTE = 60000L;
   private final long MILLIS_PER_SECOND = 1000L;
-  // private long goal_time_secs;//??!~?!?!!?
-
-  //not stored in database?
-  // private LocalTime starting_time;
-  // private LocalTime end_time;
 
   public Task (String name, long goal_time) {
     this.name = name;
@@ -115,8 +110,34 @@ public class Task {
     }
   }
 
-  public void saveGoal(int hours, int minutes, int seconds) {
-    long goal = 0;
+  // COMMENT THESE BACK IN IF THINGS DON'T WORK
+  // //give run_id, returns lap_id
+  // public int start(int run_id) {
+  //   long time = System.currentTimeMillis();
+  //   try(Connection con = DB.sql2o.open()) {
+  //     String sql = "INSERT lap_times SET (start_time, task_id, run_id) VALUES (:start_time, :task_id, :run_id) RETURNING id";
+  //     int id = (int) con.createQuery(sql, true)
+  //       .addParameter("start_time", time)
+  //       .addParameter("task_id", this.getId())
+  //       .addParameter("run_id", run_id)
+  //       .executeUpdate()
+  //       .getKey();
+  //   }
+  //   return id;
+  // }
+  //
+  // public void end(int lap_id) {
+  //   long time = System.currentTimeMillis();
+  //   try(Connection con = DB.sql2o.open()) {
+  //     String sql = "UPDATE lap_times SET end_time = :end_time WHERE id = :lap_id";
+  //     con.createQuery(sql)
+  //       .addParameter("end_time", time)
+  //       .addParameter("lap_id", lap_id)
+  //       .executeUpdate();
+  //   }
+  // }
+
+  public void saveGoal(int hours, int minutes, int seconds) {    long goal = 0;
     goal += hours * MILLIS_PER_HOUR;
     goal += minutes * MILLIS_PER_MINUTE;
     goal += seconds * MILLIS_PER_SECOND;
@@ -127,6 +148,12 @@ public class Task {
   }
 
   public String getTimeAsString(long deltaT) {
+    // boolean negative = false;
+    // if (deltaT < 0) {
+    //   deltaT *= -1;
+    //   negative = true;
+    // }
+
     long hours = deltaT / MILLIS_PER_HOUR;
     deltaT -= hours * MILLIS_PER_HOUR;
     long minutes = deltaT / MILLIS_PER_MINUTE;
@@ -134,6 +161,11 @@ public class Task {
     long seconds = deltaT / MILLIS_PER_SECOND;
     deltaT -= seconds * MILLIS_PER_SECOND;
     long milliseconds = deltaT;
-    return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, milliseconds);
+    // if (negative) {
+    //   return String.format("-%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
+    // } else {
+    //   return String.format("+%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
+    // }
+    return String.format("%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
   }
 }

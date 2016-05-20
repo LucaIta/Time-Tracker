@@ -19,15 +19,65 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    //Noah's routes for the timer
+    post("/timer/createrun/:routine_id", (request, response) -> {
+      int routineId = Integer.parseInt(request.params("routine_id"));
+      Routine routine = Routine.find(routineId);
+      Run newRun = new Run(routine.getId());
+      newRun.save();
+      String url = String.format("http://localhost:4567/timer/%d", newRun.getId());
+      response.redirect(url);
+      return null;
+    });
+
+    get("/timer/:run_id", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      int runId = Integer.parseInt(request.params("run_id"));
+      Run run = Run.find(runId);
+      Routine routine = Routine.find(run.getRoutineId());
+      model.put("run", run);
+      model.put("routine", routine);
+      model.put("template", "templates/timer.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/timer/:run_id/start", (request, response) -> {
+      int runId = Integer.parseInt(request.params("run_id"));
+      Run run = Run.find(runId);
+      run.start();
+      String url = String.format("http://localhost:4567/timer/%d", runId);
+      response.redirect(url);
+      return null;
+    });
+
+    post("/timer/:run_id/lap", (request, response) -> {
+      int runId = Integer.parseInt(request.params("run_id"));
+      Run run = Run.find(runId);
+      run.logLap();
+      String url = String.format("http://localhost:4567/timer/%d", runId);
+      response.redirect(url);
+      return null;
+    });
+
+    post("/timer/:run_id/stop", (request, response) -> {
+      int runId = Integer.parseInt(request.params("run_id"));
+      Run run = Run.find(runId);
+      run.end();
+      String url = String.format("http://localhost:4567/timer/%d", runId);
+      response.redirect(url);
+      return null;
+    });
+    //end Noah's routes
+
     post("/tasks", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       String input_task = request.queryParams("input_task");
       String hour = request.queryParams("input_hh");
       String minute = request.queryParams("input_mm");
       String second = request.queryParams("input_ss");
-      int number_hh;
-      int number_mm;
-      int number_ss;
+      long number_hh;
+      long number_mm;
+      long number_ss;
 
       if (hour.equals("")) {
         number_hh = 0;
@@ -47,8 +97,7 @@ public class App {
         number_ss = Integer.parseInt(second);
       }
 
-      long goal = number_hh + number_mm + number_ss; // This line need to change with Millisecond convertion method
-
+      long goal = (number_hh * 3600000L) + (number_mm  * 60000L) + (number_ss * 1000L);
       Task newTask = new Task(input_task, goal);
       newTask.save();
 
@@ -79,6 +128,15 @@ public class App {
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("routines", Routine.all());
       model.put("template", "templates/routines.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/routines/:id", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      int routineId = Integer.parseInt(request.params("id"));
+      Routine routine = Routine.find(routineId);
+      model.put("routine", routine);
+      model.put("template", "templates/timer.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
