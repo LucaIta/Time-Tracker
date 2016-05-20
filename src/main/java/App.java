@@ -183,15 +183,6 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    // post("/routine_start_button/:id", (request, response) -> {
-    //   Map<String, Object> model = new HashMap<String, Object>();
-    //   int routineId = Integer.parseInt(request.params(":id"));
-    //   String url = String.format("http://localhost:4567/timer/createrun/%d", routineId);
-    //   response.redirect(url);
-    //   return null;
-    // });
-
-
 // Add Tasks to Routine section --------------------
     get("/routines_tasks", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();

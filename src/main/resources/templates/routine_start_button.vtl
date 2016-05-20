@@ -12,5 +12,7 @@
 #end
 
 <form action="/timer/createrun/$routine.getId()" method="post">
-  <button type="submit" id="routine_start_button" name="routine_start_button">Start your routine</button>
+  <button type="submit" id="routine_start_button" name="routine_start_button" class="btn btn-success">Start your routine</button>
 </form>
+
+<a href="/routineDisplayer/$routine.getId()" class="btn btn-info">View routine stats</a>
