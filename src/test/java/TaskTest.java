@@ -71,13 +71,14 @@ public class TaskTest {
     assertEquals(0, Task.all().size());
   }
 
-  // @Test
-  // public void getLapTimes_returnsAllTheLapTimesOfTheTask() {
-  //   Task testTask = new Task("Do the dishes", 1);
-  //   LapTime testLapTime = new LapTime(1, 2);
-  //   testLapTime.addToTask(testTask);
-  //   assertTrue(testLapTime.equals(testTask.getLapTimes().get(0)));
-  // }
+  @Test
+  public void getLapTimes_returnsAllTheLapTimesOfTheTask() {
+    Task testTask = new Task("Do the dishes", 1);
+    LapTime testLapTime = new LapTime(1, testTask.getId());
+    //testLapTime.addToTask(testTask);
+    testLapTime.save();
+    assertTrue(testLapTime.equals(testTask.getLapTimes().get(0)));
+  }
 
   @Test
   public void saveGoal_savesGoalTimeCorrectly() {

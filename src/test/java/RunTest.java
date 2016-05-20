@@ -54,4 +54,34 @@ public class RunTest {
     Run savedRun = Run.find(myRun.getId());
     assertTrue(myRun.equals(savedRun));
   }
+
+  @Test
+  public void total_returnsTheTotalTimeOFtheRoutineTasks() {
+    Routine myRoutine = new Routine("routine1");
+    myRoutine.save();
+    Run newRun = new Run(myRoutine.getId());
+    newRun.save();
+
+    Task myTask = new Task("Jumping jack", 500);
+    myTask.save();
+    Task myTask2 = new Task("Jumping jack", 500);
+    myTask2.save();
+
+    myRoutine.addTask(myTask); // can I still use it?
+    myRoutine.addTask(myTask2);
+
+    LapTime newLapTime1 = new LapTime(newRun.getId(), myTask.getId());
+    LapTime newLapTime2 = new LapTime(newRun.getId(), myTask2.getId());
+
+    newLapTime1.save();
+    newLapTime2.save();
+
+    newLapTime1.saveStartTime();
+    newLapTime2.saveStartTime();
+    newLapTime1.saveEndTime();
+    newLapTime2.saveEndTime();
+
+    assertTrue(100L > newRun.getTotal());
+  }
+
 }

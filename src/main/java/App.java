@@ -105,14 +105,15 @@ public class App {
       return null;
     });
 
-    get("/timerDisplayer", (request, response) -> {  // this is just a test, should change the path
-      Map<String, Object> model = new HashMap<String, Object>();
-      model.put("tasks", Task.all());
-      model.put("testLapTime", Task.all().get(0).getLapTimes().get(0));
-      // probably later they will be only the tasks of this routine
-      model.put("template", "templates/timer_board.vtl");
-      return new ModelAndView(model, layout);
-    }, new VelocityTemplateEngine());
+    // this one is not used anymore
+    // get("/timerDisplayer", (request, response) -> {  // this is just a test, should change the path
+    //   Map<String, Object> model = new HashMap<String, Object>();
+    //   model.put("tasks", Task.all());
+    //   model.put("testLapTime", Task.all().get(0).getLapTimes().get(0));
+    //   // probably later they will be only the tasks of this routine
+    //   model.put("template", "templates/timer_board.vtl");
+    //   return new ModelAndView(model, layout);
+    // }, new VelocityTemplateEngine());
 
     get("/routineDisplayer", (request, response) -> {  // this is just a test, should change the path
       Map<String, Object> model = new HashMap<String, Object>();

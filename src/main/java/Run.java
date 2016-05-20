@@ -5,7 +5,7 @@ import java.util.List;
 public class Run {
   private int routine_id;
   private int id;
-  private int task_index;      
+  private int task_index;
   private int lap_id;
 
   public Run (int routine) {
@@ -118,5 +118,25 @@ public class Run {
     }
   }
 
+  public long getTotal() {
+    long sum = 0L;
+    int runId = this.id;
+    int routineId = this.routine_id;
+    Routine newRoutine = Routine.find(routineId);
+    List<Task> tasks = newRoutine.getTasks();
+    System.out.println(tasks);
+    for (Task task : tasks) {
+      List<LapTime> lapTimes = task.getLapTimes();
+      for (LapTime laptime : lapTimes) {
+        if (laptime.getId() == runId
+            && laptime.getEndTime() > 0
+            && laptime.getStartTime() > 0) {
+          sum += laptime.getEndTime() - laptime.getStartTime();
+        }
+    //
+      }
+    }
+    return sum;
+  }
 
 }
