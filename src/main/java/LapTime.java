@@ -16,7 +16,10 @@ public class LapTime {
   public LapTime(int run_id, int task_id) {
     this.run_id = run_id;
     this.task_id = task_id;
+  }
 
+  public LapTime (long startTime) {
+    this.start_time = startTime;
   }
 
   public long getStartTime() {
@@ -137,11 +140,15 @@ public class LapTime {
   public static long getAverageTime(List<LapTime> timesList) {
     long sum_time = 0L;
     for (LapTime time : timesList) {
-      long userTime = time.getEndTime() - time.getStartTime();
-      sum_time += userTime;
+      if (time.getEndTime() > 0 && time.getStartTime() > 0) {
+        long userTime = time.getEndTime() - time.getStartTime();
+        sum_time += userTime;
+      }
     }
-    long averTime;
-    averTime = sum_time / timesList.size();
+    long averTime = 0L;
+    if (timesList.size() != 0) {
+      averTime = sum_time / timesList.size();
+    }
     return averTime;
   }
 
@@ -150,8 +157,10 @@ public class LapTime {
     ArrayList<Long> timesList = new ArrayList<Long>();
 
     for(LapTime lapTime : lapTimes) {
-      long userTime = lapTime.getEndTime() - lapTime.getStartTime();
-      timesList.add(userTime);
+      if (lapTime.getEndTime() > 0 && lapTime.getStartTime() > 0) {
+        long userTime = lapTime.getEndTime() - lapTime.getStartTime();
+        timesList.add(userTime);
+      }
     }
     long best_time;
     best_time = timesList.get(0);
