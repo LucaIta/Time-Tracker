@@ -16,8 +16,8 @@
         <td>$task.getTimeAsString($task.getGoalTime())</td>
 
         #foreach ($laptime in $task.getLapTimes())
-          #if ($laptime.getRunId() == $run.getId())
-            <td>$laptime.getTimeAsString($laptime.getCompletionTime())</td>
+          #if ($laptime.getRunId() == $run.getId() && $laptime.getEndTime() > $laptime.getStartTime())
+            <td>$task.getTimeAsString($laptime.getCompletionTime())</td>
             <td>$laptime.getTimeAsString($laptime.getOffsetFromGoal($task.getGoalTime()))</td>
           #else
           #end

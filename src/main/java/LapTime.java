@@ -81,6 +81,12 @@ public class LapTime {
   }
 
   public String getTimeAsString(long deltaT) {
+    boolean negative = false;
+    if (deltaT < 0) {
+      deltaT *= -1;
+      negative = true;
+    }
+
     long hours = deltaT / MILLIS_PER_HOUR;
     deltaT -= hours * MILLIS_PER_HOUR;
     long minutes = deltaT / MILLIS_PER_MINUTE;
@@ -88,7 +94,11 @@ public class LapTime {
     long seconds = deltaT / MILLIS_PER_SECOND;
     deltaT -= seconds * MILLIS_PER_SECOND;
     long milliseconds = deltaT;
-    return String.format("%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
+    if (negative) {
+      return String.format("-%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
+    } else {
+      return String.format("+%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
+    }
   }
 
   public static LapTime find(int id) {

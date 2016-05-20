@@ -141,6 +141,12 @@ public class Task {
   }
 
   public String getTimeAsString(long deltaT) {
+    // boolean negative = false;
+    // if (deltaT < 0) {
+    //   deltaT *= -1;
+    //   negative = true;
+    // }
+
     long hours = deltaT / MILLIS_PER_HOUR;
     deltaT -= hours * MILLIS_PER_HOUR;
     long minutes = deltaT / MILLIS_PER_MINUTE;
@@ -148,6 +154,11 @@ public class Task {
     long seconds = deltaT / MILLIS_PER_SECOND;
     deltaT -= seconds * MILLIS_PER_SECOND;
     long milliseconds = deltaT;
+    // if (negative) {
+    //   return String.format("-%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
+    // } else {
+    //   return String.format("+%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
+    // }
     return String.format("%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
   }
 
