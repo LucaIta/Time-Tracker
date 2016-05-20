@@ -76,9 +76,9 @@ public class App {
       String hour = request.queryParams("input_hh");
       String minute = request.queryParams("input_mm");
       String second = request.queryParams("input_ss");
-      int number_hh;
-      int number_mm;
-      int number_ss;
+      long number_hh;
+      long number_mm;
+      long number_ss;
 
       if (hour.equals("")) {
         number_hh = 0;
@@ -98,7 +98,7 @@ public class App {
         number_ss = Integer.parseInt(second);
       }
 
-      long goal = number_hh * 3600000L + number_mm  * 60000L + number_ss * 1000L;
+      long goal = (number_hh * 3600000L) + (number_mm  * 60000L) + (number_ss * 1000L);
       Task newTask = new Task(input_task, goal);
       newTask.save();
 
