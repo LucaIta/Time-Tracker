@@ -114,9 +114,12 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    get("/routineDisplayer", (request, response) -> {  // this is just a test, should change the path
+    get("/routineDisplayer/:routine_id", (request, response) -> {  // this is just a test, should change the path
       Map<String, Object> model = new HashMap<String, Object>();
-      model.put("tasks", Task.all()); // they should be only the task related to the routine
+      //model.put("tasks", Task.all()); // they should be only the task related to the routine
+      int routineId = Integer.parseInt(request.params("routine_id"));
+      Routine routine = Routine.find(routineId);
+      model.put("routine", routine);
       model.put("LapTime", LapTime.class);
       model.put("template", "templates/routine.vtl");
       return new ModelAndView(model, layout);
