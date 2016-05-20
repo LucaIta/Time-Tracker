@@ -18,8 +18,15 @@ public class LapTime {
     this.task_id = task_id;
   }
 
-  public LapTime (long startTime) {
-    this.start_time = startTime;
+  public LapTime(long start_time){
+   this.start_time = start_time;
+  }
+
+  public void addToTask(Task task) {
+    try (Connection con = DB.sql2o.open()){
+      String sql = "INSERT INTO lap_times (start_time,task_id) VALUES (:start_time, :task_id)";
+      con.createQuery(sql).addParameter("start_time", System.currentTimeMillis()).addParameter("task_id", this.task_id).executeUpdate();
+    }
   }
 
   public long getStartTime() {

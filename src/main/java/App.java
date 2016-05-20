@@ -250,7 +250,7 @@ public class App {
           number_ss = Integer.parseInt(second);
         }
 
-        long new_goal = number_hh + number_mm + number_ss; // This line need to change with Millisecond convertion method
+        long new_goal = (number_hh * 3600000L) + (number_mm * 60000L) + (number_ss * 1000L); // This line need to change with Millisecond convertion method
 
         task.update(new_name, new_goal);
       }
