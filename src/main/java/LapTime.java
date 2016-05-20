@@ -16,7 +16,17 @@ public class LapTime {
   public LapTime(int run_id, int task_id) {
     this.run_id = run_id;
     this.task_id = task_id;
+  }
 
+  public LapTime(long start_time){
+   this.start_time = start_time;
+  }
+
+  public void addToTask(Task task) {
+    try (Connection con = DB.sql2o.open()){
+      String sql = "INSERT INTO lap_times (start_time,task_id) VALUES (:start_time, :task_id)";
+      con.createQuery(sql).addParameter("start_time", System.currentTimeMillis()).addParameter("task_id", this.task_id).executeUpdate();
+    }
   }
 
   public long getStartTime() {
@@ -141,7 +151,11 @@ public class LapTime {
       sum_time += userTime;
     }
     long averTime;
-    averTime = sum_time / timesList.size();
+    if (timesList.size() != 0){
+      averTime = sum_time / timesList.size();
+    } else {
+      averTime = 0;
+    }
     return averTime;
   }
 

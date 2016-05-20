@@ -64,9 +64,9 @@ public class LapTimeTest {
 
   @Test
   public void getAverageTime() {
-    LapTime testLapTime = new LapTime(1000);
-    LapTime testLapTime2 = new LapTime(2000);
-    LapTime testLapTime3 = new LapTime(3000);
+    LapTime testLapTime = new LapTime(1000, 1);
+    LapTime testLapTime2 = new LapTime(2000, 1);
+    LapTime testLapTime3 = new LapTime(3000, 1);
     Task teskTask = new Task("Do the dishes", 1);
     testLapTime.addToTask(teskTask);
     testLapTime2.addToTask(teskTask);
