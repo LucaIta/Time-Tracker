@@ -117,7 +117,6 @@ public class App {
     get("/routineDisplayer", (request, response) -> {  // this is just a test, should change the path
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("tasks", Task.all()); // they should be only the task related to the routine
-      LapTime lapTime = new LapTime(1);
       model.put("LapTime", LapTime.class);
       model.put("template", "templates/routine.vtl");
       return new ModelAndView(model, layout);
