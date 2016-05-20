@@ -1,0 +1,18 @@
+<h1>$routine.getName()</h1>
+
+#if ($routine.getTasks().size() != 0)
+  #foreach ($task in $routine.getTasks())
+    <h3>List of all tasks</h3>
+    <ul>
+      #foreach ($task in $tasks)
+        <li>$task.getName()</li>
+      #end
+    </ul>
+  #end
+#else
+  <h3>No tasks added to this routine!</h3>
+#end
+
+<form action="/routine_start_button/$routine.getId()" method="post">
+  <button type="submit" id="routine_start_button" name="routine_start_button">Start your routine</button>
+</form>

@@ -45,7 +45,7 @@
       <h3>List of all routines</h3>
       <ul>
         #foreach ($routine in $routines)
-          <li>$routine.getName()</li>
+          <li><a href="/routine_start_button/$routine.getId()">$routine.getName()</a></li>
         #end
       </ul>
     #end
