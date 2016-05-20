@@ -1,7 +1,7 @@
 # Team week project: Time Tracker
 
 #### _A program to track time for a single task or group of tasks._
-#### _May 19, 2016_
+#### _May 20, 2016_
 
 #### By
 _Noah Kittleson_
@@ -19,7 +19,7 @@ Users will be able to view all Tasks that linked to Routines.
 Databases:
 * Production database is called "time_tracker"
 * Development database is called "time_tracker_test". The development database should be created by duplicating from production database.
-* There are tables in the production database: "tasks", "lap_times", "routines", and "routines_tasks".
+* There are tables in the production database: "runs", "tasks", "lap_times", "routines", and "routines_tasks".
 * SQL database dump file is named time_tracker.sql
 
 ## Setup/Installation Requirements
@@ -37,12 +37,12 @@ Databases:
   In PSQL:
 *  =# CREATE DATABASE time_tracker;
 *  =# \c time_tracker;
-*  time_tracker=# CREATE TABLE tasks (id serial PRIMARY KEY, name varchar, goal_time bigint);
-*  time_tracker=# CREATE TABLE lap_times (id serial PRIMARY KEY, start_time bigint, end_time bigint, task_id int);
-);
-*  time_tracker=# CREATE TABLE routines (id serial PRIMARY KEY, name varchar);
-*  time_tracker=# CREATE TABLE routines_tasks (id serial PRIMARY KEY, routine_id int, task_id int);
-*  time_tracker=# CREATE DATABASE band_tracker_test WITH TEMPLATE time_tracker;
+
+* Download this repository
+* In a separate terminal, navigate to your project folder then run:
+
+`psql time_tracker < time_tracker.sql`
+
 
 ## Known Bugs
 
